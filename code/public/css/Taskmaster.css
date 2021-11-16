@@ -1,8 +1,9 @@
-table.calendarHeader
+.calendarHeader
 {
     background-color: darkturquoise;
-    width: 100%;
+    width:100% ;
     position: fixed;
+    
 }
 
 .calendarWindow 
@@ -43,7 +44,7 @@ table.calendarHeader
     background-color: darkturquoise;
     width: 100%;
     position:   fixed;
-    top: 90%;
+    top: 93%;
 }
 
 body{
