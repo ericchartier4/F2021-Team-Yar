@@ -115,23 +115,40 @@ app.get( "/logout", ( req, res ) => {
 //Mackenzie's 4 pages
 app.get( "/addassignment", async( req, res ) => {
     //check if user is authenticated before rendering - will need to do this later on once login/signup is done
- 
- });
+    res.render("addassignment");
 
- app.get( "/editassignment", async( req, res ) => {
-    //check if user is authenticated before rendering - will need to do this later on once login/signup is done
- 
- });
+});
 
- app.get( "/addcourse", async( req, res ) => {
-    //check if user is authenticated before rendering - will need to do this later on once login/signup is done
- 
- });
+app.post("/addass", async( req, res ) => {
+    //IN PROGRESS
+    console.log(req.body);
+    //console.log(req.body.dueDate);
+    //console.log("hello")
+    // const results = await Assignment.find();
+    // const assignment = new Assignment({
+    //     _id: results.length+1,
+    //     assignmentName: req.body.assignName,
+    //     dueDate: req.body.dueDate,
+    //     dueTime: req.body.dueTime,
 
- app.get( "/joincourse", async( req, res ) => {
+    // })
+    res.redirect("/calendar");
+});
+
+app.get( "/editassignment", async( req, res ) => {
     //check if user is authenticated before rendering - will need to do this later on once login/signup is done
- 
- });
+    res.render("editassignment");
+});
+
+app.get( "/addcourse", async( req, res ) => {
+    //check if user is authenticated before rendering - will need to do this later on once login/signup is done
+    res.render("addcourse");
+});
+
+app.get( "/joincourse", async( req, res ) => {
+    //check if user is authenticated before rendering - will need to do this later on once login/signup is done
+    res.render("joincourse");
+});
 
  app.get( "/nextweek", async( req, res ) => {
     // will take the date ( or sunday date) , and offset by -7 day and return to render calander with new date. -Elc  
@@ -141,3 +158,5 @@ app.get( "/addassignment", async( req, res ) => {
     // will take the date ( or sunday date) , and offset by +7 day and return to render calander with new date. -Elc  
  
  });
+
+ 
