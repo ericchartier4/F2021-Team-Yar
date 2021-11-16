@@ -17,7 +17,8 @@
         <h1 >Add Assignment</h1>
     </div>
     <div class="enterDetails centered">
-        <form action="/addass" method="POST" class="centered">
+        <form action="/addassignment" method="POST" class="centered">
+            <input type="hidden" id="courseId" name="courseId" value="1"><!--this needs to be deleted and replaced by a variable or by a dropdown for courses-->
             <input type="text" name="assignName" class="textbox" placeholder="Assignment Name">
             <br><br>
             <label>Due Date: </label>

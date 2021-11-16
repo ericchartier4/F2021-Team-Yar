@@ -115,38 +115,71 @@ app.get( "/logout", ( req, res ) => {
 //Mackenzie's 4 pages
 app.get( "/addassignment", async( req, res ) => {
     //check if user is authenticated before rendering - will need to do this later on once login/signup is done
+    console.log("user accessed the add assignment page");
     res.render("addassignment");
 
 });
 
-app.post("/addass", async( req, res ) => {
-    //IN PROGRESS
+app.post("/addassignment", async( req, res ) => {
+    //MOSTLY DONE - NEED A WAY TO KNOW FOR SURE WHICH CLASS TO ADD TO
+    
     console.log(req.body);
-    //console.log(req.body.dueDate);
-    //console.log("hello")
-    // const results = await Assignment.find();
-    // const assignment = new Assignment({
-    //     _id: results.length+1,
-    //     assignmentName: req.body.assignName,
-    //     dueDate: req.body.dueDate,
-    //     dueTime: req.body.dueTime,
+    const results = await Assignment.find();
+    const assignment = new Assignment({
+        _id: results.length+1,
+        assignmentName: req.body.assignName,
+        dueDate: req.body.dueDate,
+        dueTime: req.body.dueTime,
+    })
+    assignment.save();
+    courseId = parseInt(req.body.courseId);
+    await Course.updateOne({_id: courseId}, 
+        {
+           $push: {assignmentList: results.length+1}
+        });
 
-    // })
     res.redirect("/calendar");
 });
 
 app.get( "/editassignment", async( req, res ) => {
     //check if user is authenticated before rendering - will need to do this later on once login/signup is done
+    console.log("user accessed the edit assignment page");
     res.render("editassignment");
+    //will need to pass variables to display which assignment is being edited
+});
+
+app.post( "/editassignment", async( req, res ) => {
+    console.log(req.body);
+    //will need to know which assignment is being edited
+    //update assignment with info from req.body
+
 });
 
 app.get( "/addcourse", async( req, res ) => {
     //check if user is authenticated before rendering - will need to do this later on once login/signup is done
+    console.log("user accessed the add course page");
     res.render("addcourse");
+});
+
+app.post( "/addcourse", async( req, res ) => {
+    console.log(req.body);
+    // const results = await Assignment.find();
+    // const course = new Course({
+    //     _id: 5,
+    //     courseName: "CS 340",
+    //     sectionName: "001",
+    //     instructor: 4, 
+    //     studentList: [],
+    //     assignmentList: [],
+    //     courseCode: "MNOP3257"
+    // })
+    // course.save();
+    res.redirect("/calendar");
 });
 
 app.get( "/joincourse", async( req, res ) => {
     //check if user is authenticated before rendering - will need to do this later on once login/signup is done
+    console.log("user accessed the join course page");
     res.render("joincourse");
 });
 
