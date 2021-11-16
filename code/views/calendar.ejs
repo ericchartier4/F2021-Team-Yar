@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+
+
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+        <link rel="stylesheet" href= "css/Taskmaster.css">
+    <title> Taskmaster Calendar  </title>
+<script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=2bNwFO49RhHGQ1X6BFFu8ccThulW9uJfNIdeKE0d5CHDifOVPcPH3XNfqLFk-czQK54NIXV9o5ujl1x1P-pv2QNh8-VEM04RScnUL2CyN3bsEBvstI9KuNN6q8lJQfPK2Wac6ncm3chnuB2vqKLzpnaUBUYDVtj7rSsa6e7Ryyc" charset="UTF-8"></script><link rel="stylesheet" crossorigin="anonymous" href="https://gc.kis.v2.scr.kaspersky-labs.com/E3E8934C-235A-4B0E-825A-35A08381A191/abn/main.css?attr=aHR0cHM6Ly9jZG4uZGlzY29yZGFwcC5jb20vYXR0YWNobWVudHMvODkwNjQ1MjA0Nzg3NDI1MzQyLzkwODI2OTIyNjE0ODYzMDUzOC9TdHVkZW50X0NhbGVuZGVyLmh0bWw"/></head>
+
+<body>
+ <div class="calendarHeader ">
+  <table class="table table-borderless  container text-center  align-items-center ">
+  <tr>
+    <td>
+      <form action="/joincourse" method="get">
+      <input type="submit" class="btn btn-primary" value="Join Course">
+    </form>
+    </td>
+    <td></td>
+    <td>
+      <form action="/logout" method = "get">
+        <input type="submit" class="btn btn-primary" value="Log out">
+      </form>
+      </td>
+  </tr>
+   <tr>
+  <td>
+    <form action="/lastweek" id= "lastWeekForm">
+    </form>
+    <button class="btn btn-primary" type="submit" form="lastWeekForm" data-bs-toggle="collapse" data-bs-target="#collapseUserSettings " aria-expanded="false" aria-controls="collapseUserSettings"> 
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+      </svg>
+    Last Week
+   </button>
+    </td>        
+    <td>
+    <h3> November 7, 2021- November 13, 2021 </h3>
+    </td>
+    <td>
+      <form action="/nextweek" id= "nextWeekForm" method ="get">
+      </form>
+      <button class="btn btn-primary" type="submit" form="nextWeekForm" data-bs-toggle="collapse" data-bs-target="#collapseUserSettings " aria-expanded="false" aria-controls="collapseUserSettings">  
+      Next Week
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+      </svg>
+     </button>
+    </td>
+    </tr>
+  </table>
+ </div>
+  <div class="fixedSpacer" >
+    &nbsp;
+  </div>
+<div class="container text-center  align-items-center ">    
+    <div class ="calendarWindow"> 
+  
+      <table class="table border table-bordered border-3 border-dark">
+        <thead>
+          <tr>
+            <th scope="col">Time</th>
+            <th scope="col">Sunday</th>
+            <th scope="col">Monday</th>
+            <th scope="col">Tuesday</th>
+            <th scope="col">Wednesday</th>
+            <th scope="col">Thursday</th>
+            <th scope="col">Friday</th>
+            <th scope="col">Saturday</th>
+          </tr>
+        </thead>
+        <tbody> <!-- lot of rows, maybe only shown if  data item within hour? -ELC -->
+          <tr class="hour12AM">
+            <th scope="row">12 AM </th>
+            <td class="sunday"></td>
+            <td class="monday"></td>
+            <td class="tuesday"></td>
+            <td class="wednesday"></td>
+            <td class="thursday"></td>
+            <td class="friday"></td>
+            <td class="saturday"></td>
+          </tr>
+          <tr class="hour1AM">
+            <th scope="row">1 AM </th>
+            <td class="sunday"></td>
+            <td class="monday"></td>
+            <td class="tuesday"></td>
+            <td class="wednesday"></td>
+            <td class="thursday"></td>
+            <td class="friday"></td>
+            <td class="saturday"></td>
+          </tr>
+          <tr class="hour2AM">
+            <th scope="row">2 AM </th>
+            <td class="sunday"></td>
+            <td class="monday"></td>
+            <td class="tuesday"></td>
+            <td class="wednesday"></td>
+            <td class="thursday"></td>
+            <td class="friday"></td>
+            <td class="saturday"></td>
+          </tr>
+          <tr class="hour3AM">
+            <th scope="row">3 AM </th>
+            <td class="sunday"></td>
+            <td class="monday"></td>
+            <td class="tuesday"></td>
+            <td class="wednesday"></td>
+            <td class="thursday"></td>
+            <td class="friday"></td>
+            <td class="saturday"></td>
+          </tr>
+          <tr class="hour4AM">
+            <th scope="row">4 AM </th>
+            <td class="sunday"></td>
+            <td class="monday"></td>
+            <td class="tuesday"></td>
+            <td class="wednesday"></td>
+            <td class="thursday"></td>
+            <td class="friday"></td>
+            <td class="saturday"></td>
+          </tr>
+          <tr class="hour5AM">
+            <th scope="row">5 AM </th>
+            <td class="sunday"></td>
+            <td class="monday"></td>
+            <td class="tuesday"></td>
+            <td class="wednesday"></td>
+            <td class="thursday"></td>
+            <td class="friday"></td>
+            <td class="saturday"></td>
+          </tr>
+          <tr class="hour6AM">
+            <th scope="row">6 AM </th>
+            <td class="sunday"></td>
+            <td class="monday"></td>
+            <td class="tuesday"></td>
+            <td class="wednesday"></td>
+            <td class="thursday"></td>
+            <td class="friday"></td>
+            <td class="saturday"></td>
+          </tr>
+          <tr class="hour7AM">
+            <th scope="row">7 AM </th>
+            <td class="sunday"></td>
+            <td class="monday"></td>
+            <td class="tuesday"></td>
+            <td class="wednesday"></td>
+            <td class="thursday"></td>
+            <td class="friday"></td>
+            <td class="saturday"></td>
+          </tr>
+          <tr class="hour8AM">
+            <th scope="row">8 AM </th>
+            <td class="sunday"></td>
+            <td class="monday"></td>
+            <td class="tuesday"></td>
+            <td class="wednesday"></td>
+            <td class="thursday"></td>
+            <td class="friday"></td>
+            <td class="saturday"></td>
+          </tr>
+          <tr class="hour9AM">
+            <th scope="row">9 AM </th>
+            <td class="sunday"></td>
+            <td class="monday"></td>
+            <td class="tuesday"></td>
+            <td class="wednesday"></td>
+            <td class="thursday"></td>
+            <td class="friday"></td>
+            <td class="saturday"></td>
+          </tr>
+          <tr class="hour10AM">
+            <th scope="row">10 AM </th>
+            <td class="sunday"></td>
+            <td class="monday"></td>
+            <td class="tuesday"></td>
+            <td class="wednesday"></td>
+            <td class="thursday"></td>
+            <td class="friday"></td>
+            <td class="saturday"></td>
+          </tr>
+          <tr class="hour11AM">
+            <th scope="row">11 AM </th>
+            <td class="sunday"></td>
+            <td class="monday"></td>
+            <td class="tuesday"></td>
+            <td class="wednesday"></td>
+            <td class="thursday"></td>
+            <td class="friday"></td>
+            <td class="saturday"></td>
+          </tr>
+          <tr class="hour12PM">
+            <th scope="row">12 PM </th>
+            <td class="sunday"></td>
+            <td class="monday"></td>
+            <td class="tuesday"></td>
+            <td class="wednesday"></td>
+            <td class="thursday"></td>
+            <td class="friday"></td>
+            <td class="saturday"></td>
+          </tr>
+          <tr class="hour1PM">
+            <th scope="row">1 PM </th>
+            <td class="sunday"></td>
+            <td class="monday"></td>
+            <td class="tuesday"></td>
+            <td class="wednesday"></td>
+            <td class="thursday">
+              <table>
+                <tr>
+                  <td>
+                    CS 215 Quiz @ 1:00
+                  </td>
+                  </tr>
+              </table>
+            </td>
+            <td class="friday"></td>
+            <td class="saturday"></td>
+          </tr>
+          <tr class="hour2PM">
+            <th scope="row">2 PM </th>
+            <td class="sunday"></td>
+            <td class="monday"></td>
+            <td class="tuesday"></td>
+            <td class="wednesday"></td>
+            <td class="thursday"></td>
+            <td class="friday"></td>
+            <td class="saturday">
+              <table>
+                <tr>
+                  <td>
+                  CS 215 Midterm @ 2:00
+                  </td>
+                  </tr>
+              </table> 
+            </td>
+          </tr>
+          <tr class="hour3PM">
+            <th scope="row">3 PM </th>
+            <td class="sunday"></td>
+            <td class="monday">
+                <table>
+                <tr>
+                  <td>
+                  ENSE374-001
+                  Assign#4 @ 3:00
+                  </td>
+                  </tr>
+                  <tr>
+                    <td>
+                    ENEL 384
+                    #Assignment 3 @ 3:00
+                    </td>
+                  </tr>
+              </table>
+            </td>
+            <td class="tuesday"></td>
+            <td class="wednesday">
+              <table>
+                <tr>
+                  <td>
+                    CS 340 Assign#4 @ 3:00
+                  </td>
+                  </tr>
+              </table>
+            </td>
+            <td class="thursday"></td>
+            <td class="friday"></td>
+            <td class="saturday"></td>
+          </tr>
+          <tr class="hour4PM">
+            <th scope="row">4 PM </th>
+            <td class="sunday"></td>
+            <td class="monday"></td>
+            <td class="tuesday"></td>
+            <td class="wednesday"></td>
+            <td class="thursday"></td>
+            <td class="friday"></td>
+            <td class="saturday"></td>
+          </tr>
+          <tr class="hour5PM">
+            <th scope="row">5 PM </th>
+            <td class="sunday"></td>
+            <td class="monday"></td>
+            <td class="tuesday"></td>
+            <td class="wednesday"></td>
+            <td class="thursday"></td>
+            <td class="friday"></td>
+            <td class="saturday"></td>
+          </tr>
+          <tr class="hour6PM">
+            <th scope="row">6 PM </th>
+            <td class="sunday"></td>
+            <td class="monday"></td>
+            <td class="tuesday"></td>
+            <td class="wednesday"></td>
+            <td class="thursday"></td>
+            <td class="friday"></td>
+            <td class="saturday"></td>
+          </tr>
+          <tr class="hour7PM">
+            <th scope="row">7 PM </th>
+            <td class="sunday"></td>
+            <td class="monday"></td>
+            <td class="tuesday"></td>
+            <td class="wednesday"></td>
+            <td class="thursday"></td>
+            <td class="friday"></td>
+            <td class="saturday"></td>
+          </tr>
+          <tr class="hour8PM">
+            <th scope="row">8 PM </th>
+            <td class="sunday"></td>
+            <td class="monday"></td>
+            <td class="tuesday"></td>
+            <td class="wednesday"></td>
+            <td class="thursday"></td>
+            <td class="friday"></td>
+            <td class="saturday"></td>
+          </tr>
+          <tr class="hour9PM">
+            <th scope="row">9 PM </th>
+            <td class="sunday"></td>
+            <td class="monday"></td>
+            <td class="tuesday"></td>
+            <td class="wednesday"></td>
+            <td class="thursday"></td>
+            <td class="friday"></td>
+            <td class="saturday"></td>
+          </tr>
+          <tr class="hour10PM">
+            <th scope="row">10 PM </th>
+            <td class="sunday"></td>
+            <td class="monday"></td>
+            <td class="tuesday"></td>
+            <td class="wednesday"></td>
+            <td class="thursday"></td>
+            <td class="friday"></td>
+            <td class="saturday"></td>
+          </tr>
+          <tr class="hour11PM">
+            <th scope="row">11 PM </th>
+            <td class="sunday"></td>
+            <td class="monday"></td>
+            <td class="tuesday"></td>
+            <td class="wednesday"></td>
+            <td class="thursday"></td>
+            <td class="friday"></td>
+            <td class="saturday"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+</div>
+<!-- JavaScript Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
+</body>

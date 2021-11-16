@@ -132,3 +132,12 @@ app.get( "/addassignment", async( req, res ) => {
     //check if user is authenticated before rendering - will need to do this later on once login/signup is done
  
  });
+
+ app.get( "/nextweek", async( req, res ) => {
+    // will take the date ( or sunday date) , and offset by -7 day and return to render calander with new date. -Elc  
+ });
+
+ app.get( "/lastweek", async( req, res ) => {
+    // will take the date ( or sunday date) , and offset by +7 day and return to render calander with new date. -Elc  
+ 
+ });
