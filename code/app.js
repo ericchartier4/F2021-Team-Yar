@@ -98,7 +98,9 @@ app.post( "/login", ( req, res ) => {
 
 //Eric - I'm guessing you'll need async here to use await while you get the assignment data so that's why I left it there- feel free to 
 //get rid of it if you aren't going to need it -MK
-app.get( "/taskmaster", async( req, res ) => {
+app.get( "/calendar", async( req, res ) => {
+    console.log ("user attempting to access calender")
+
    //check if user is authenticated before rendering - will need to do this later on once login/signup is done
 
 });
