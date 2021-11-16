@@ -100,7 +100,7 @@ app.post( "/login", ( req, res ) => {
 //get rid of it if you aren't going to need it -MK
 app.get( "/calendar", async( req, res ) => {
     console.log ("user attempting to access calender")
-
+    res.render("calendar"); 
    //check if user is authenticated before rendering - will need to do this later on once login/signup is done
 
 });
