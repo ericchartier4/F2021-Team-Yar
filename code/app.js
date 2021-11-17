@@ -31,6 +31,7 @@ mongoose.connect( 'mongodb://localhost:27017/taskmaster',
 
 //create user schema
 const userSchema = new mongoose.Schema ({
+    _id : mongoose.Schema.Types.ObjectId,
     username: String,
     password: String,
     listOfCourses: Array,
@@ -41,6 +42,7 @@ userSchema.plugin(passportLocalMongoose);
 
 //create course schema
 const courseSchema = new mongoose.Schema ({
+    _id : mongoose.Schema.Types.ObjectId,
     courseName: String,
     sectionName: String,
     instructor: Number, //number is instructor id - we never made any functionality for multiple instructors, 
@@ -52,6 +54,7 @@ const courseSchema = new mongoose.Schema ({
 
 //create assignment schema
 const assignmentSchema = new mongoose.Schema ({
+    _id : mongoose.Schema.Types.ObjectId,
     assignmentName: String,
     dueDate: String, //I used the format yyyy-mm-dd -MK
     dueTime: String //24h format: 2:00 pm is 14:00 -MK
@@ -96,11 +99,31 @@ app.post( "/login", ( req, res ) => {
 //Eric - I'm guessing you'll need async here to use await while you get the assignment data so that's why I left it there- feel free to 
 //get rid of it if you aren't going to need it -MK
 app.get( "/calendar", async( req, res ) => {
+    
+
+    let sundayDate = new Date();
+    let dayofWeek = sundayDate.getDay(); // will be 0 = sunday , monday =1... 
+    sundayDate.setDate(sundayDate.getDate()-dayofWeek);
+    sundayDate.setHours(0);
+    sundayDate.setMinutes(0);
+    sundayDate.setSeconds(0);
+    sundayDate.setMilliseconds(0);
+    let saturdayDate = sundayDate;
+    saturdayDate.setDate(saturdayDate.getDate()+6);
+    let endDate = saturdayDate;
+    endDate.setDate(endDate.getDate()+1);
+    let userClassList = await User.findOne({username:"instrucB"});
+    console.log(userClassList._id);
+   //for (let i = sundayDate ; i.getTime() < endDate.getTime(); i.setDatei.getDate() +1 )) // using the time fron midnight jan 1 ,1970  
+    //{
+
+    //}
     console.log ("user attempting to access calender")
     res.render("calendar"); 
    //check if user is authenticated before rendering - will need to do this later on once login/signup is done
 
 });
+
 
 //in theory this one should already work - MK
 app.get( "/logout", ( req, res ) => {
