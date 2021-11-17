@@ -41,11 +41,8 @@ mongoose.connect( 'mongodb://localhost:27017/taskmaster',
                  { useNewUrlParser: true, useUnifiedTopology: true });
 
 //create user schema
-
-
-const  ObjectId = require('mongodb').ObjectId; // constent allows us to make our own object id's -elc
 const userSchema = new mongoose.Schema ({
-    _id : mongoose.Schema.Types.ObjectId,
+    _id: Number,
     username: String,
     password: String,
     listOfCourses: Array,
@@ -56,10 +53,10 @@ userSchema.plugin(passportLocalMongoose);
 
 //create course schema
 const courseSchema = new mongoose.Schema ({
-    _id : mongoose.Schema.Types.ObjectId,
+    _id: Number,
     courseName: String,
     sectionName: String,
-    instructor:mongoose.Schema.Types.ObjectId, //number is instructor id - we never made any functionality for multiple instructors, 
+    instructor: Number, //number is instructor id - we never made any functionality for multiple instructors, 
                         //so it will remain as one and not an array - MK
     studentList: Array, //array of ids
     assignmentList: Array, //array of ids
@@ -68,7 +65,7 @@ const courseSchema = new mongoose.Schema ({
 
 //create assignment schema
 const assignmentSchema = new mongoose.Schema ({
-    _id : mongoose.Schema.Types.ObjectId,
+    _id: Number,
     assignmentName: String,
     dueDate: String,
     dueTime: String
@@ -90,142 +87,142 @@ passport.deserializeUser(User.deserializeUser());
 
 User.insertMany([
     {
-        _id: ObjectId("111111111111111111111111"),
+        _id: 1,
         username: "studA",
         password: "a",
-        listOfCourses: [ ObjectId("111111111111111111111111"), ObjectId("111111111111111111111112"), ObjectId("111111111111111111111113"), ObjectId("111111111111111111111114"),ObjectId("111111111111111111111115")],
+        listOfCourses: [1,2,3,4,5],
         isInstructor: false,
     },
     {
-        _id: ObjectId("111111111111111111111112") ,
+        _id: 2,
         username: "studB",
         password: "a",
-        listOfCourses: [ ObjectId("111111111111111111111111"),  ObjectId("111111111111111111111113"),  ObjectId("111111111111111111111115")],
+        listOfCourses: [1,3,5],
         isInstructor: false,
     },
     {
-        _id: ObjectId("111111111111111111111113") ,
+        _id: 3,
         username: "instrucA",
         password: "a",
-        listOfCourses: [ ObjectId("111111111111111111111111"), ObjectId("111111111111111111111112"), ObjectId("111111111111111111111113")],
+        listOfCourses: [1,2,3],
         isInstructor: true,
     },
     {
-        _id: ObjectId("111111111111111111111114") ,
+        _id: 4,
         username: "instrucB",
         password: "a",
-        listOfCourses: [ ObjectId("111111111111111111111114"),  ObjectId("111111111111111111111115")],
+        listOfCourses: [4,5],
         isInstructor: true,
     }
 ]);
 
 Course.insertMany([
     {
-        _id: ObjectId("111111111111111111111111") ,
+        _id: 1,
         courseName: "ENSE 374",
         sectionName: "001",
-        instructor:  ObjectId("111111111111111111111113"), 
-        studentList: [ ObjectId("111111111111111111111111"),  ObjectId("111111111111111111111112")],
-        assignmentList: [ ObjectId("111111111111111111111111"), ObjectId("111111111111111111111112")],
+        instructor: 3, 
+        studentList: [1,2],
+        assignmentList: [1,2],
         courseCode: "XYAK2314"
     },
     {
-        _id: ObjectId("111111111111111111111112") ,
+        _id: 2,
         courseName: "ENEL 384",
         sectionName: "001",
-        instructor:  ObjectId("111111111111111111111113"), 
-        studentList: [ ObjectId("111111111111111111111111")],
-        assignmentList: [ ObjectId("111111111111111111111113"), ObjectId("111111111111111111111114")],
+        instructor: 3, 
+        studentList: [1],
+        assignmentList: [3,4],
         courseCode: "ABCD1234"
     },
     {
-        _id: ObjectId("111111111111111111111113") ,
+        _id: 3,
         courseName: "ENSE 352",
         sectionName: "001",
-        instructor:  ObjectId("111111111111111111111113"), 
-        studentList: [ObjectId("111111111111111111111111"),ObjectId("111111111111111111111112")],
-        assignmentList: [ObjectId("111111111111111111111115"),ObjectId("111111111111111111111116")],
+        instructor: 3, 
+        studentList: [1,2],
+        assignmentList: [5,6],
         courseCode: "EFGH5678"
     },
     {
-        _id: ObjectId("111111111111111111111114") ,
+        _id: 4,
         courseName: "CS 215",
         sectionName: "001",
-        instructor: ObjectId("111111111111111111111114"), 
-        studentList: [ObjectId("111111111111111111111111")],
-        assignmentList: [ObjectId("111111111111111111111117"),ObjectId("111111111111111111111118")],
+        instructor: 4, 
+        studentList: [1],
+        assignmentList: [7,8],
         courseCode: "IJKL2138"
     },
     {
-        _id: ObjectId("111111111111111111111115") ,
+        _id: 5,
         courseName: "CS 340",
         sectionName: "001",
-        instructor: ObjectId("111111111111111111111114"), 
-        studentList: [ObjectId("111111111111111111111111"),ObjectId("111111111111111111111112")],
-        assignmentList: [ObjectId("111111111111111111111119"),ObjectId("111111111111111111111110")],
+        instructor: 4, 
+        studentList: [1,2],
+        assignmentList: [9,10],
         courseCode: "MNOP3257"
     }
 ]);
 
 Assignment.insertMany([
     {
-        _id: ObjectId("111111111111111111111111") ,
+        _id: 1,
         assignmentName: "Assignment 1",
-        dueDate: "2021/11/17",
+        dueDate: "2021-11-17",
         dueTime: "14:00",
     },
     {
-        _id: ObjectId("111111111111111111111112") ,
+        _id: 2,
         assignmentName: "Assignment 2",
-        dueDate: "2021/11/24",
+        dueDate: "2021-11-24",
         dueTime: "15:00",
     },
     {
-        _id: ObjectId("111111111111111111111113") ,
+        _id: 3,
         assignmentName: "Assign #1",
-        dueDate: "2021/11/19",
+        dueDate: "2021-11-19",
         dueTime: "23:59",
     },
     {
-        _id: ObjectId("111111111111111111111114") ,
+        _id: 4,
         assignmentName: "Assign #2",
-        dueDate: "2021/11/30",
+        dueDate: "2021-11-30",
         dueTime: "23:59",
     },
     {
-        _id: ObjectId("111111111111111111111115") ,
+        _id: 5,
         assignmentName: "Ass. 1",
-        dueDate: "2021/12/01",
+        dueDate: "2021-12-01",
         dueTime: "13:00",
     },
     {
-        _id: ObjectId("111111111111111111111116") ,
+        _id: 6,
         assignmentName: "Ass. 2",
-        dueDate: "2021/12/03",
+        dueDate: "2021-12-03",
         dueTime: "09:00",
     },
     {
-        _id: ObjectId("111111111111111111111117") ,
+        _id: 7,
         assignmentName: "Assignment 1",
-        dueDate: "2021/11/15",
+        dueDate: "2021-11-15",
         dueTime: "12:00",
     },
     {
-        _id: ObjectId("111111111111111111111118") ,
+        _id: 8,
         assignmentName: "Assignment 2",
-        dueDate: "2021/11/25",
+        dueDate: "2021-11-25",
         dueTime: "08:30",
     },
     {
-        _id: ObjectId("111111111111111111111119") ,
+        _id: 9,
         assignmentName: "Assignment 1",
-        dueDate: "2021/11/23",
+        dueDate: "2021-11-23",
         dueTime: "10:30",
     },
     {
-        _id: ObjectId("111111111111111111111110") ,
+        _id: 10,
         assignmentName: "Assignment 2",
-        dueDate: "2021/11/29",
+        dueDate: "2021-11-29",
         dueTime: "15:45",
     }
 ]);
