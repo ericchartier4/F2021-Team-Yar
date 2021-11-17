@@ -101,7 +101,7 @@ app.post( "/login", ( req, res ) => {
 app.get( "/calendar", async( req, res ) => {
     
 
-    let sundayDate = new Date();
+    let sundayDate = new Date("2021/11/15");
     let dayofWeek = sundayDate.getDay(); // will be 0 = sunday , monday =1... 
     sundayDate.setDate(sundayDate.getDate()-dayofWeek);
     sundayDate.setHours(0);
@@ -122,7 +122,14 @@ app.get( "/calendar", async( req, res ) => {
         for (let j of assignmentListHolder)
         {
             let assignmentHolder = await Assignment.findOne({_id:j});
-            console.log(assignmentHolder);
+            let dateHolder = assignmentHolder["dueDate"];
+            dateHolder = dateHolder
+            dateHolder = new Date(dateHolder);
+            
+            if (dateHolder.getTime()>=sundayDate.getDate()&& dateHolder.getTime() <= endDate.getTime())
+            {
+                console.log(dateHolder.toDateString());
+            }
         }
    }
     console.log ("user attempting to access calender")
