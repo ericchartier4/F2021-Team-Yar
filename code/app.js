@@ -45,7 +45,7 @@ const courseSchema = new mongoose.Schema ({
     _id : mongoose.Schema.Types.ObjectId,
     courseName: String,
     sectionName: String,
-    instructor: Number, //number is instructor id - we never made any functionality for multiple instructors, 
+    instructor: mongoose.Schema.Types.ObjectId, //number is instructor id - we never made any functionality for multiple instructors, 
                         //so it will remain as one and not an array - MK
     studentList: Array, //array of ids
     assignmentList: Array, //array of ids
@@ -113,11 +113,18 @@ app.get( "/calendar", async( req, res ) => {
     let endDate = saturdayDate;
     endDate.setDate(endDate.getDate()+1);
     let userClassList = await User.findOne({username:"instrucB"});
-    console.log(userClassList._id);
-   //for (let i = sundayDate ; i.getTime() < endDate.getTime(); i.setDatei.getDate() +1 )) // using the time fron midnight jan 1 ,1970  
-    //{
-
-    //}
+    userClassList= userClassList["listOfCourses"];
+    console.log(userClassList);
+   for (let i of userClassList)
+   {
+        let assignmentListHolder = await Course.findOne({_id: i });
+        assignmentListHolder = assignmentListHolder["assignmentList"];
+        for (let j of assignmentListHolder)
+        {
+            let assignmentHolder = await Assignment.findOne({_id:j});
+            console.log(assignmentHolder);
+        }
+   }
     console.log ("user attempting to access calender")
     res.render("calendar"); 
    //check if user is authenticated before rendering - will need to do this later on once login/signup is done
