@@ -31,7 +31,6 @@ mongoose.connect( 'mongodb://localhost:27017/taskmaster',
 
 //create user schema
 const userSchema = new mongoose.Schema ({
-    _id: Number,
     username: String,
     password: String,
     listOfCourses: Array,
@@ -42,7 +41,6 @@ userSchema.plugin(passportLocalMongoose);
 
 //create course schema
 const courseSchema = new mongoose.Schema ({
-    _id: Number,
     courseName: String,
     sectionName: String,
     instructor: Number, //number is instructor id - we never made any functionality for multiple instructors, 
@@ -54,7 +52,6 @@ const courseSchema = new mongoose.Schema ({
 
 //create assignment schema
 const assignmentSchema = new mongoose.Schema ({
-    _id: Number,
     assignmentName: String,
     dueDate: String, //I used the format yyyy-mm-dd -MK
     dueTime: String //24h format: 2:00 pm is 14:00 -MK
