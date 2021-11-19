@@ -32,7 +32,6 @@ mongoose.connect( 'mongodb://localhost:27017/taskmaster',
 
 //create user schema
 const userSchema = new mongoose.Schema ({
-    _id : mongoose.Schema.Types.ObjectId,
     username: String,
     password: String,
     listOfCourses: Array,
@@ -44,7 +43,6 @@ userSchema.plugin(passportLocalMongoose);
 
 //create course schema
 const courseSchema = new mongoose.Schema ({
-    _id : mongoose.Schema.Types.ObjectId,
     courseName: String,
     sectionName: String,
     instructor: mongoose.Schema.Types.ObjectId, //number is instructor id - we never made any functionality for multiple instructors, 
@@ -56,7 +54,6 @@ const courseSchema = new mongoose.Schema ({
 
 //create assignment schema
 const assignmentSchema = new mongoose.Schema ({
-    _id : mongoose.Schema.Types.ObjectId,
     assignmentName: String,
     dueDate: String, //I used the format yyyy-mm-dd -MK
     dueTime: String //24h format: 2:00 pm is 14:00 -MK
@@ -90,13 +87,13 @@ app.get( "/", ( req, res ) => {
 
 //signup and login forms - Ify you might need 2 of /signup since the signup form for an instructor is different with the auth code
 //I think /login should work for both since they're the same? Do whatever you need to -MK
-//app.post( "/signup", (req, res) => {});
-
-app.get("/login", (req, res) => {
-    res.render("Login", {});
+app.post( "/signup", (req, res) => {
+   
 });
 
-//app.post( "/login", ( req, res ) => {});
+app.post( "/login", ( req, res ) => {
+   
+});
 
 //Eric - I'm guessing you'll need async here to use await while you get the assignment data so that's why I left it there- feel free to 
 //get rid of it if you aren't going to need it -MK
@@ -156,35 +153,38 @@ app.get( "/logout", ( req, res ) => {
 });
 
 //Mackenzie's 4 pages
-app.get( "/addassignment", async( req, res ) => {
+app.get( "/addassignment", ( req, res ) => {
     //check if user is authenticated before rendering - will need to do this later on once login/signup is done
     console.log("user accessed the add assignment page");
     res.render("addassignment");
-
 });
 
 app.post("/addassignment", async( req, res ) => {
     //MOSTLY DONE - NEED A WAY TO KNOW FOR SURE WHICH CLASS TO ADD TO
-    
     console.log(req.body);
-    const results = await Assignment.find();
+
+    date = req.body.dueDate;
+    fixedDate = date.substr(0,4)+"/"+date.substr(5,2)+"/"+date.substr(8,2);
+
     const assignment = new Assignment({
-        _id: results.length+1,
         assignmentName: req.body.assignName,
-        dueDate: req.body.dueDate,
+        dueDate: fixedDate,
         dueTime: req.body.dueTime,
-    })
+    });
+    assignID = assignment._id;
+    console.log(assignID);
     assignment.save();
-    courseId = parseInt(req.body.courseId);
+    courseId = mongoose.Types.ObjectId(req.body.courseId);
     await Course.updateOne({_id: courseId}, 
         {
-           $push: {assignmentList: results.length+1}
+           $push: {assignmentList: assignID}
         });
-
-    res.redirect("/calendar");
+    res.redirect("/editassignment") //debugging purposes
+    //res.render("todo", {username: req.body.loginuser, tasks: readTask()}); //just to look at
+    //res.redirect("/calendar");
 });
 
-app.get( "/editassignment", async( req, res ) => {
+app.get( "/editassignment", ( req, res ) => {
     //check if user is authenticated before rendering - will need to do this later on once login/signup is done
     console.log("user accessed the edit assignment page");
     res.render("editassignment");
@@ -195,10 +195,23 @@ app.post( "/editassignment", async( req, res ) => {
     console.log(req.body);
     //will need to know which assignment is being edited
     //update assignment with info from req.body
+    date = req.body.dueDate;
+    fixedDate = date.substr(0,4)+"/"+date.substr(5,2)+"/"+date.substr(8,2);
+    
+    assignId = mongoose.Types.ObjectId(req.body.assignId);
+    await Assignment.updateOne({_id: assignId}, 
+        { $set: {
+            assignmentName: req.body.assignName,
+            dueDate: fixedDate,
+            dueTime: req.body.dueTime,
+        }
+        });
 
+    res.redirect("/joincourse")
+    //res.redirect("/calendar");
 });
 
-app.get( "/addcourse", async( req, res ) => {
+app.get( "/addcourse", ( req, res ) => {
     //check if user is authenticated before rendering - will need to do this later on once login/signup is done
     console.log("user accessed the add course page");
     res.render("addcourse");
@@ -220,9 +233,44 @@ app.post( "/addcourse", async( req, res ) => {
     res.redirect("/calendar");
 });
 
-app.get( "/joincourse", async( req, res ) => {
+app.get( "/joincourse", ( req, res ) => {
     //check if user is authenticated before rendering - will need to do this later on once login/signup is done
     console.log("user accessed the join course page");
+    res.render("joincourse");
+});
+
+app.post( "/joincourse", async( req, res ) => {
+    //need student id from req.user.username/id
+    //add student's id to add to the course's studentList
+    //add course id (if course exists) to the student's listOfCourses
+    let foundCourse = false;
+    const results = await Course.find();
+    for(i = 0; i < results.length; i++){
+        if (results[i].courseCode.toLowerCase() == req.body.code.toLowerCase()){
+            console.log("a match was found");
+            courseId = results[i]._id;
+            console.log(courseId);
+            foundCourse = true;
+        }
+        else{
+            console.log("no match yet");
+        }
+    }
+    if(foundCourse){
+        studId = mongoose.Types.ObjectId(req.body.studId); //this needs to change later
+        await Course.updateOne({_id: courseId}, 
+            { 
+                $push: {studentList: studId},
+            });
+
+        await User.updateOne({_id: studId}, 
+            { 
+                $push: {listOfCourses: courseId},  
+            });
+
+
+    }
+
     res.render("joincourse");
 });
 
