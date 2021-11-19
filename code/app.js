@@ -25,6 +25,7 @@ app.use (passport.session());
 
 app.set( "view engine", "ejs" );
 
+
 // connect to mongoose on port 27017
 mongoose.connect( 'mongodb://localhost:27017/taskmaster', 
                  { useNewUrlParser: true, useUnifiedTopology: true });
@@ -39,6 +40,7 @@ const userSchema = new mongoose.Schema ({
 });
 // plugins extend Schema functionality
 userSchema.plugin(passportLocalMongoose);
+
 
 //create course schema
 const courseSchema = new mongoose.Schema ({
@@ -99,39 +101,46 @@ app.get("/login", (req, res) => {
 //Eric - I'm guessing you'll need async here to use await while you get the assignment data so that's why I left it there- feel free to 
 //get rid of it if you aren't going to need it -MK
 app.get( "/calendar", async( req, res ) => {
-    
+    if (!req.session.calendarDatePointer) {  
+        req.session.calendarDatePointer = new Date();
+        req.session.calendarDatePointer.setHours(0);
+        req.session.calendarDatePointer.setMinutes(0);
+        req.session.calendarDatePointer.setSeconds(0);
+        req.session.calendarDatePointer.setMilliseconds(0);
+      }
+      if (!req.session.instructorCoursePointer )
+      {
+         req.session.instructorCoursePointer ="Null";
+      }
 
-    let sundayDate = new Date("2021/11/15");
-    let dayofWeek = sundayDate.getDay(); // will be 0 = sunday , monday =1... 
-    sundayDate.setDate(sundayDate.getDate()-dayofWeek);
-    sundayDate.setHours(0);
-    sundayDate.setMinutes(0);
-    sundayDate.setSeconds(0);
-    sundayDate.setMilliseconds(0);
-    let saturdayDate = sundayDate;
-    saturdayDate.setDate(saturdayDate.getDate()+6);
-    let endDate = saturdayDate;
-    endDate.setDate(endDate.getDate()+1);
+    let dayofWeek = req.session.calendarDatePointer.getDay(); // will be 0 = sunday , monday =1... 
+    let sundayOfWeek = req.session.calendarDatePointer;
+    sundayOfWeek.setDate(req.session.calendarDatePointer.getDate()-dayofWeek);
+    console.log(sundayOfWeek.toLocaleString());
+    let saturdayOfWeek = sundayOfWeek;
+    saturdayOfWeek.setDate(saturdayOfWeek.getDate()+6);
+    sundayOfNextWeek = saturdayDate;
+    sundayOfNextWeek.setDate(sundayOfNextWeek.getDate()+1);
     let userClassList = await User.findOne({username:"instrucB"});
-    userClassList= userClassList["listOfCourses"];
-    console.log(userClassList);
-   for (let i of userClassList)
-   {
-        let assignmentListHolder = await Course.findOne({_id: i });
-        assignmentListHolder = assignmentListHolder["assignmentList"];
-        for (let j of assignmentListHolder)
-        {
-            let assignmentHolder = await Assignment.findOne({_id:j});
-            let dateHolder = assignmentHolder["dueDate"];
-            dateHolder = dateHolder
-            dateHolder = new Date(dateHolder);
+    userCourseList= userClassList["listOfCourses"];
+    console.log(req.session.calendarDatePointer.toDateString().getDate());
+     //for (let userCourse of userClassList)
+     //{
+      //let assignmentListHolder = await Course.findOne({_id: userCourse });
+         //assignmentListHolder = assignmentListHolder["assignmentList"];
+        //for (let j of assignmentListHolder)
+        //{
+          //  let assignmentHolder = await Assignment.findOne({_id:j});
+           // let dateHolder = assignmentHolder["dueDate"];
+           // dateHolder = dateHolder
+            //dateHolder = new Date(dateHolder);
             
-            if (dateHolder.getTime()>=sundayDate.getDate()&& dateHolder.getTime() <= endDate.getTime())
-            {
-                console.log(dateHolder.toDateString());
-            }
-        }
-   }
+            //if (dateHolder.getTime()>=sundayDate.getDate()&& dateHolder.getTime() <= endDate.getTime())
+            //{
+             //   console.log(dateHolder.toDateString());
+            //}
+        //}
+   //}
     console.log ("user attempting to access calender")
     res.render("calendar"); 
    //check if user is authenticated before rendering - will need to do this later on once login/signup is done
