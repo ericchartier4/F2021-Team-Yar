@@ -97,7 +97,93 @@ app.post( "/login", ( req, res ) => {
 
 //Eric - I'm guessing you'll need async here to use await while you get the assignment data so that's why I left it there- feel free to 
 //get rid of it if you aren't going to need it -MK
-app.get( "/calendar", async( req, res ) => {
+
+
+function isLessThan24HourStrings(  lessThan, moreThan) {
+let result = false;
+
+let [lessThanHours, lessThanMinutes] = lessThan.split(':');
+let [moreThanHours, moreThanMinutes] = moreThan.split(':');
+ 
+ if ( lessThanHours === moreThanHours && lessThanMinutes < moreThanMinutes)
+{
+    result = true ;
+}
+else if (lessThanHours < moreThanHours )
+{
+    result = true;
+}
+
+return result; 
+};
+
+function get12HourFrom24HourString(hourStringinput)
+{
+ let result;
+ let [hour, minutes] = hourStringinput.split(':');
+ if ( hour > 12 ){
+     hour = hour - 12
+     if ( hour === 12 || hour === 11 || hour === 10 )
+     {
+     result = hour.toString();
+     result = result + ":" ;
+     result = result + minutes;
+     result = result + "PM";
+     }
+     else
+     {
+     result = "0"
+     result = result + hour.toString();
+     result = result + ":" ;
+     result = result + minutes;
+     result = result + "PM";
+     }
+     
+}
+ else 
+ {
+    
+    result = hour.toString();
+    result = result + ":" ;
+    result = result + minutes;
+    result = result + "AM";
+ }
+return result; 
+}
+
+function sortAssignmentsByDueDate(arrayInput)
+{
+
+    let arrayLength = 0 ;
+    for ( let i in arrayInput)
+     {
+         arrayLength = arrayLength + 1;
+     }
+       for(let i =0 ; i < arrayLength  ; i++)
+       {
+         let smallest = i; 
+         for (let j =i ; j < arrayLength  ; j++) 
+         { 
+             
+             if ( isLessThan24HourStrings(arrayInput[j]["dueTime"],arrayInput[smallest]["dueTime"]) )
+             {
+                
+                 smallest = j; 
+                 
+             }
+         }
+         let swap = arrayInput[i];
+         arrayInput[i] = arrayInput[smallest];
+         arrayInput[smallest] = swap;
+         
+         
+       } 
+  return arrayInput;
+}
+
+
+
+app.get( "/calendar", async( req, res ) => {  // wiil have to make these redirect to diffrent sub redirects , should not be too hard. 
     if (!req.session.calendarDatePointer) {  
         req.session.calendarDatePointer = new Date();
         req.session.calendarDatePointer.setHours(0);
@@ -113,36 +199,51 @@ app.get( "/calendar", async( req, res ) => {
     let dayofWeek = req.session.calendarDatePointer.getDay(); // will be 0 = sunday , monday =1... 
     let sundayOfWeek = req.session.calendarDatePointer;
     sundayOfWeek.setDate(req.session.calendarDatePointer.getDate()-dayofWeek);
-    console.log(sundayOfWeek.toLocaleString());
     let saturdayOfWeek = sundayOfWeek;
     saturdayOfWeek.setDate(saturdayOfWeek.getDate()+6);
-    sundayOfNextWeek = saturdayDate;
+    sundayOfNextWeek = saturdayOfWeek;
     sundayOfNextWeek.setDate(sundayOfNextWeek.getDate()+1);
-    let userClassList = await User.findOne({username:"instrucB"});
-    userCourseList= userClassList["listOfCourses"];
-    console.log(req.session.calendarDatePointer.toDateString().getDate());
-     //for (let userCourse of userClassList)
-     //{
-      //let assignmentListHolder = await Course.findOne({_id: userCourse });
-         //assignmentListHolder = assignmentListHolder["assignmentList"];
-        //for (let j of assignmentListHolder)
-        //{
-          //  let assignmentHolder = await Assignment.findOne({_id:j});
-           // let dateHolder = assignmentHolder["dueDate"];
-           // dateHolder = dateHolder
-            //dateHolder = new Date(dateHolder);
-            
-            //if (dateHolder.getTime()>=sundayDate.getDate()&& dateHolder.getTime() <= endDate.getTime())
-            //{
-             //   console.log(dateHolder.toDateString());
-            //}
-        //}
-   //}
-    console.log ("user attempting to access calender")
-    res.render("calendar"); 
-   //check if user is authenticated before rendering - will need to do this later on once login/signup is done
+    let courseListArray = await User.findOne({username:"instrucA"});
+    courseListArray= courseListArray["listOfCourses"];
+    let userCourses = [];  
+    let userAssignments = []; 
+    for (let i of courseListArray)
+    {
+    let viewSingleCourse = await Course.findOne({_id: i });
+       userCourses.push(viewSingleCourse);
+        viewSingleCourse= viewSingleCourse["assignmentList"];
+        for (let j of viewSingleCourse)
+        {
+         let veiwSingleAssignment = await Assignment.findOne({_id:j});
 
+         let assignmentDueDate = veiwSingleAssignment["dueDate"];
+         assignmentDueDate= new Date(assignmentDueDate);
+            
+            if (assignmentDueDate.getTime()>=sundayOfWeek.getDate()&& assignmentDueDate.getTime() <= sundayOfNextWeek.getTime())
+            {
+               userAssignments.push(veiwSingleAssignment);
+            }
+        }
+    }
+    console.log(userAssignments);
+    
+    userAssignments = sortAssignmentsByDueDate(userAssignments);
+
+    console.log(userAssignments);
+        
+    console.log ("user attempting to access calender")
+    res.render("calendar", {isLessThan24HourStrings:isLessThan24HourStrings ,get12HourFrom24HourString:get12HourFrom24HourString}); 
+   //check if user is authenticated before rendering - will need to do this later on once login/signup is done
+   console.log ("user attempting to access calender")
+  
+   // check if user is an instructor or not , need implamentation 
+   //if(req.user.isInstructor === false )
+   //res.render("calendar", { userCourses:userCourses, userAssignments:userAssignments,   isLessThan24HourStrings:isLessThan24HourStrings ,get12HourFrom24HourString:get12HourFrom24HourString}); 
+   
+    //("calendar", { userCourses:userCourses, userAssignments:userAssignments,   isLessThan24HourStrings:isLessThan24HourStrings ,get12HourFrom24HourString:get12HourFrom24HourString, currentClass:req.session.});
+  //check if user is authenticated before rendering - will need to do this later on once login/signup is done
 });
+
 
 
 //in theory this one should already work - MK
