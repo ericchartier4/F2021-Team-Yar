@@ -88,13 +88,13 @@ app.get( "/", ( req, res ) => {
 
 //signup and login forms - Ify you might need 2 of /signup since the signup form for an instructor is different with the auth code
 //I think /login should work for both since they're the same? Do whatever you need to -MK
-app.post( "/signup", (req, res) => {
-   
+//app.post( "/signup", (req, res) => {});
+
+app.get("/login", (req, res) => {
+    res.render("Login", {});
 });
 
-app.post( "/login", ( req, res ) => {
-   
-});
+//app.post( "/login", ( req, res ) => {});
 
 //Eric - I'm guessing you'll need async here to use await while you get the assignment data so that's why I left it there- feel free to 
 //get rid of it if you aren't going to need it -MK
