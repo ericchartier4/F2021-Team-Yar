@@ -320,19 +320,58 @@ app.get( "/addcourse", ( req, res ) => {
 
 app.post( "/addcourse", async( req, res ) => {
     console.log(req.body);
-    // const results = await Assignment.find();
-    // const course = new Course({
-    //     _id: 5,
-    //     courseName: "CS 340",
-    //     sectionName: "001",
-    //     instructor: 4, 
-    //     studentList: [],
-    //     assignmentList: [],
-    //     courseCode: "MNOP3257"
-    // })
-    // course.save();
-    res.redirect("/calendar");
+
+    const results = await Course.find();
+    newCode = genCode();
+    console.log("new code")
+    let codeChecked = false;
+    while(!codeChecked){
+        let match = false;
+        for(i=0; i< results.length; i++){
+            if(results[i].courseCode == newCode){
+                match = true;
+            }
+        }
+        if(match){//if a code match was found
+            newCode = genCode(); //create a new code and loop again
+            console.log("new code")
+        }
+        else{
+            codeChecked = true;
+            console.log("unique code")
+        }
+    }
+
+    const course = new Course({
+        courseName: req.body.course,
+        sectionName: req.body.section,
+        instructor: req.body.instrucId, 
+        studentList: [],
+        assignmentList: [],
+        courseCode: newCode
+    })
+    course.save();
+    res.redirect("addassignment");
+    //res.redirect("/calendar");
 });
+
+function genCode(){
+    let result = '';
+    let alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    let digits = "123456789";
+    for (i = 0; i<4; i++){
+        let letterRand = Math.floor(Math.random() * 26); //returns a number between 0 and 25
+        result += alphabet.charAt(letterRand);
+    }
+    for (i = 0; i<4; i++){
+        let numberRand = Math.floor(Math.random() * 9); //returns a number between 0 and 8
+        result += digits.charAt(numberRand);
+    }
+
+    //console.log(Math.random());
+    console.log(result);
+    return result;
+}
 
 app.get( "/joincourse", ( req, res ) => {
     //check if user is authenticated before rendering - will need to do this later on once login/signup is done
@@ -368,11 +407,9 @@ app.post( "/joincourse", async( req, res ) => {
             { 
                 $push: {listOfCourses: courseId},  
             });
-
-
     }
 
-    res.render("joincourse");
+    res.render("addcourse");
 });
 
  app.get( "/nextweek", async( req, res ) => {
