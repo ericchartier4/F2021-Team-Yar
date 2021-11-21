@@ -10,7 +10,7 @@
 </head>
 <body>
     <br><br><br>
-    <form>
+    <form action="/logout">
         <input class="btn btn-primary logoutButton" type="submit" value="Log out">
     </form>
     <div class="detailsHeader centered">
@@ -18,8 +18,7 @@
     </div>
     <div class="enterDetails centered">
         <form action="/addcourse" method="POST" class="centered">
-            <!-- delete later and use session variable instead -->
-            <input type="hidden" name="instrucId" value="111111111111111111111111">
+            <input type="hidden" name="instrucId" value="<%= instrucId %>">
             <input type="text" name="course" class="textbox" placeholder="Course Name">
             <br><br>
             <input type="text" name="section" class="textbox" placeholder="Section Name">

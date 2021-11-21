@@ -257,11 +257,10 @@ app.get( "/logout", ( req, res ) => {
 app.get( "/addassignment", ( req, res ) => {
     //check if user is authenticated before rendering - will need to do this later on once login/signup is done
     console.log("user accessed the add assignment page");
-    res.render("addassignment");
+    res.render("addassignment", {courseId: "111111111111111111111111"}); //replace hardcoded value with req.body.variable from eric's form
 });
 
 app.post("/addassignment", async( req, res ) => {
-    //MOSTLY DONE - NEED A WAY TO KNOW FOR SURE WHICH CLASS TO ADD TO
     console.log(req.body);
 
     date = req.body.dueDate;
@@ -280,16 +279,32 @@ app.post("/addassignment", async( req, res ) => {
         {
            $push: {assignmentList: assignID}
         });
-    res.redirect("/editassignment") //debugging purposes
-    //res.render("todo", {username: req.body.loginuser, tasks: readTask()}); //just to look at
-    //res.redirect("/calendar");
+    res.redirect("/calendar");
 });
 
-app.get( "/editassignment", ( req, res ) => {
+app.get( "/editassignment", async( req, res ) => {
     //check if user is authenticated before rendering - will need to do this later on once login/signup is done
     console.log("user accessed the edit assignment page");
-    res.render("editassignment");
-    //will need to pass variables to display which assignment is being edited
+
+    let assignId = "111111111111111111111113" //replace hardcoded value with req.body.variable from eric's form
+    const results = await Assignment.find();
+    let match = false;
+        for(i=0; i< results.length; i++){
+            if(results[i]._id == assignId){
+                match = true;
+                assignName = results[i].assignmentName;
+                dueDate = results[i].dueDate;
+                dueTime = results[i].dueTime;
+                break;
+            }
+        }
+        if(match){
+            fixedDate = dueDate.substr(0,4)+"-"+dueDate.substr(5,2)+"-"+dueDate.substr(8,2);
+            res.render("editassignment", {assignId: assignId, assignName: assignName, dueDate: fixedDate, dueTime: dueTime});
+        }
+        else{
+            console.log("Error. Assignment not found.")
+        }
 });
 
 app.post( "/editassignment", async( req, res ) => {
@@ -307,15 +322,13 @@ app.post( "/editassignment", async( req, res ) => {
             dueTime: req.body.dueTime,
         }
         });
-
-    res.redirect("/joincourse")
-    //res.redirect("/calendar");
+    res.redirect("/calendar");
 });
 
 app.get( "/addcourse", ( req, res ) => {
     //check if user is authenticated before rendering - will need to do this later on once login/signup is done
     console.log("user accessed the add course page");
-    res.render("addcourse");
+    res.render("addcourse", {instrucId: "111111111111111111111111"}); //replace hardcoded value with req.user.userid - passport
 });
 
 app.post( "/addcourse", async( req, res ) => {
@@ -330,6 +343,7 @@ app.post( "/addcourse", async( req, res ) => {
         for(i=0; i< results.length; i++){
             if(results[i].courseCode == newCode){
                 match = true;
+                break;
             }
         }
         if(match){//if a code match was found
@@ -351,8 +365,7 @@ app.post( "/addcourse", async( req, res ) => {
         courseCode: newCode
     })
     course.save();
-    res.redirect("addassignment");
-    //res.redirect("/calendar");
+    res.redirect("/calendar");
 });
 
 function genCode(){
@@ -376,7 +389,7 @@ function genCode(){
 app.get( "/joincourse", ( req, res ) => {
     //check if user is authenticated before rendering - will need to do this later on once login/signup is done
     console.log("user accessed the join course page");
-    res.render("joincourse");
+    res.render("joincourse", {studId: "111111111111111111111111"}); //replace hardcoded value with req.user.userid - passport
 });
 
 app.post( "/joincourse", async( req, res ) => {
@@ -391,13 +404,14 @@ app.post( "/joincourse", async( req, res ) => {
             courseId = results[i]._id;
             console.log(courseId);
             foundCourse = true;
+            break;
         }
         else{
             console.log("no match yet");
         }
     }
     if(foundCourse){
-        studId = mongoose.Types.ObjectId(req.body.studId); //this needs to change later
+        studId = mongoose.Types.ObjectId(req.body.studId); //this needs to change later to req.user.userId passport session
         await Course.updateOne({_id: courseId}, 
             { 
                 $push: {studentList: studId},
@@ -409,7 +423,7 @@ app.post( "/joincourse", async( req, res ) => {
             });
     }
 
-    res.render("addcourse");
+    res.redirect("/calendar");
 });
 
  app.get( "/nextweek", async( req, res ) => {

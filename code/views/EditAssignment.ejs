@@ -10,7 +10,7 @@
 </head>
 <body>
     <br><br><br>
-    <form>
+    <form action="/logout">
         <input class="btn btn-primary logoutButton" type="submit" value="Log out">
     </form>
     <div class="detailsHeader centered">
@@ -18,16 +18,12 @@
     </div>
     <div class="enterDetails centered">
         <form action="/editassignment" method="POST" class="centered">
-            <!-- replace with variable -->
-            <input type="hidden" name="assignId" value="111111111111111111111111">
-            <!-- replace with variable -->
-            <input type="text" name="assignName" class="textbox" value="Assignment 1">
+            <input type="hidden" name="assignId" value="<%= assignId %>">
+            <input type="text" name="assignName" class="textbox" value="<%= assignName %>">
             <br><br>
             <label>Due Date: </label>
-            <!-- replace with variable will need to change - to / before changing value-->
-            <input id="dueDate" name="dueDate" type="date" value="2021-11-17">
-            <!-- replace with variable -->
-            <input id="dueTime" name="dueTime" type="time" value="14:00">
+            <input id="dueDate" name="dueDate" type="date" value="<%= dueDate %>">
+            <input id="dueTime" name="dueTime" type="time" value="<%= dueTime %>">
             <br><br>
             <input class="btn btn-primary" type="submit" value="Submit">
         </form>
