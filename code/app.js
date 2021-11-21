@@ -1,3 +1,11 @@
+var vm = require("vm");
+var fs = require("fs");
+
+//include functions file
+var functions = fs.readFileSync('functions.js');
+const script = new vm.Script(functions);
+script.runInThisContext();
+
 const express  = require( "express" );
 const mongoose = require( "mongoose" );
 
@@ -367,24 +375,6 @@ app.post( "/addcourse", async( req, res ) => {
     course.save();
     res.redirect("/calendar");
 });
-
-function genCode(){
-    let result = '';
-    let alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    let digits = "123456789";
-    for (i = 0; i<4; i++){
-        let letterRand = Math.floor(Math.random() * 26); //returns a number between 0 and 25
-        result += alphabet.charAt(letterRand);
-    }
-    for (i = 0; i<4; i++){
-        let numberRand = Math.floor(Math.random() * 9); //returns a number between 0 and 8
-        result += digits.charAt(numberRand);
-    }
-
-    //console.log(Math.random());
-    console.log(result);
-    return result;
-}
 
 app.get( "/joincourse", ( req, res ) => {
     //check if user is authenticated before rendering - will need to do this later on once login/signup is done
