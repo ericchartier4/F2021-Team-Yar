@@ -1,0 +1,21 @@
+<table>
+    <tr>
+      <td>
+      <%= assignment["courseName"]%>
+      <%= assignment["courseSection"]%>  
+      <%= assignment["assignmentName"]%>
+       &nbsp
+      <%= assignment["dueTime12Hour"] %>
+      </td>
+     
+    <% if(isInstructor === true )
+    { %> 
+      <td>    
+      <form>
+    <input type="submit" value="edit">
+    <input type= "hidden" name="assignId" value= "<%= assignment['_id'] %>" >
+      </form>
+      </td>
+      <%}%>
+      </tr>
+  </table>
