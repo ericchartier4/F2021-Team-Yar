@@ -1,0 +1,204 @@
+<td class="sunday">
+  <% for (let assignment of assignmentInfoList)
+  { 
+    if ((isLessThan24HourStrings(endLastHour,assignment["dueTime24Hour"]))&& (isLessThan24HourStrings(assignment["dueTime24Hour"],nextHour)) && (assignment["dueDateInWeek"]===0 ) ) 
+    {%> 
+    <table>
+      <tr>
+        <td>
+        <%= assignment["courseName"]%>
+        <%= assignment["courseSection"]%>  
+        <%= assignment["assignmentName"]%>
+         &nbsp
+        <%= assignment["dueTime12Hour"] %>
+        </td>
+       
+      <% if(isInstructor === true )
+      { %> 
+        <td>    
+        <form>
+      <input type="submit" value="edit">
+      <input type= "hidden" name="assignId" value= "<%= assignment['_id'] %>" >
+        </form>
+        </td>
+        <%}%>
+        </tr>
+    </table>
+    <%}%>
+  <%}%>
+</td>
+<td class="monday">
+  <% for (let assignment of assignmentInfoList)
+  { 
+    if ((isLessThan24HourStrings(endLastHour,assignment["dueTime24Hour"]))&& (isLessThan24HourStrings(assignment["dueTime24Hour"],nextHour)) && (assignment["dueDateInWeek"]===1 ) ) 
+    {%> 
+    <table>
+      <tr>
+        <td>
+        <%= assignment["courseName"]%>
+        <%= assignment["courseSection"]%>  
+        <%= assignment["assignmentName"]%>
+         &nbsp
+        <%= assignment["dueTime12Hour"] %>
+        </td>
+       
+      <% if(isInstructor === true )
+      { %> 
+        <td>    
+        <form>
+      <input type="submit" value="edit">
+      <input type= "hidden" name="assignId" value= "<%= assignment['_id'] %>" >
+        </form>
+        </td>
+        <%}%>
+        </tr>
+    </table>
+    <%}%>
+  <%}%>
+</td>
+<td class="tuesday">
+  <% for (let assignment of assignmentInfoList)
+  { 
+    if ((isLessThan24HourStrings(endLastHour,assignment["dueTime24Hour"]))&& (isLessThan24HourStrings(assignment["dueTime24Hour"],nextHour)) && (assignment["dueDateInWeek"]===2 ) ) 
+    {%> 
+    <table>
+      <tr>
+        <td>
+        <%= assignment["courseName"]%>
+        <%= assignment["courseSection"]%>  
+        <%= assignment["assignmentName"]%>
+         &nbsp
+        <%= assignment["dueTime12Hour"] %>
+        </td>
+       
+      <% if(isInstructor === true )
+      { %> 
+        <td>    
+        <form>
+      <input type="submit" value="edit">
+      <input type= "hidden" name="assignId" value= "<%= assignment['_id'] %>" >
+        </form>
+        </td>
+        <%}%>
+        </tr>
+    </table>
+    <%}%>
+  <%}%>
+</td>
+<td class="wednesday">
+  <% for (let assignment of assignmentInfoList)
+{ 
+  if ((isLessThan24HourStrings(endLastHour,assignment["dueTime24Hour"]))&& (isLessThan24HourStrings(assignment["dueTime24Hour"],nextHour)) && (assignment["dueDateInWeek"]===3 ) ) 
+  {%> 
+  <table>
+    <tr>
+      <td>
+      <%= assignment["courseName"]%>
+      <%= assignment["courseSection"]%>  
+      <%= assignment["assignmentName"]%>
+       &nbsp
+      <%= assignment["dueTime12Hour"] %>
+      </td>
+     
+    <% if(isInstructor === true )
+    { %> 
+      <td>    
+      <form>
+    <input type="submit" value="edit">
+    <input type= "hidden" name="assignId" value= "<%= assignment['_id'] %>" >
+      </form>
+      </td>
+      <%}%>
+      </tr>
+  </table>
+  <%}%>
+<%}%>
+</td>
+<td class="thursday">
+  <% for (let assignment of assignmentInfoList)
+  { 
+    if ((isLessThan24HourStrings(endLastHour,assignment["dueTime24Hour"]))&& (isLessThan24HourStrings(assignment["dueTime24Hour"],nextHour)) && (assignment["dueDateInWeek"]===4 ) ) 
+    {%> 
+    <table>
+      <tr>
+        <td>
+        <%= assignment["courseName"]%>
+        <%= assignment["courseSection"]%>  
+        <%= assignment["assignmentName"]%>
+         &nbsp
+        <%= assignment["dueTime12Hour"] %>
+        </td>
+       
+      <% if(isInstructor === true )
+      { %> 
+        <td>    
+        <form>
+      <input type="submit" value="edit">
+      <input type= "hidden" name="assignId" value= "<%= assignment['_id'] %>" >
+        </form>
+        </td>
+        <%}%>
+        </tr>
+    </table>
+    <%}%>
+  <%}%>
+</td>
+<td class="friday">
+  <% for (let assignment of assignmentInfoList)
+  { 
+    if ((isLessThan24HourStrings(endLastHour,assignment["dueTime24Hour"]))&& (isLessThan24HourStrings(assignment["dueTime24Hour"],nextHour)) && (assignment["dueDateInWeek"]===5 ) ) 
+    {%> 
+    <table>
+      <tr>
+        <td>
+        <%= assignment["courseName"]%>
+        <%= assignment["courseSection"]%>  
+        <%= assignment["assignmentName"]%>
+         &nbsp
+        <%= assignment["dueTime12Hour"] %>
+        </td>
+       
+      <% if(isInstructor === true )
+      { %> 
+        <td>    
+        <form>
+      <input type="submit" value="edit">
+      <input type= "hidden" name="assignId" value= "<%= assignment['_id'] %>" >
+        </form>
+        </td>
+        <%}%>
+        </tr>
+    </table>
+    <%}%>
+  <%}%>
+</td>
+<td class="saturday">
+  <% for (let assignment of assignmentInfoList)
+{ 
+  if ((isLessThan24HourStrings(endLastHour,assignment["dueTime24Hour"]))&& (isLessThan24HourStrings(assignment["dueTime24Hour"],nextHour)) && (assignment["dueDateInWeek"]===6 ) ) 
+  {%> 
+  <table>
+    <tr>
+      <td>
+      <%= assignment["courseName"]%>
+      <%= assignment["courseSection"]%>  
+      <%= assignment["assignmentName"]%>
+       &nbsp
+      <%= assignment["dueTime12Hour"] %>
+      </td>
+     
+    <% if(isInstructor === true )
+    { %> 
+      <td>    
+      <form>
+    <input type="submit" value="edit">
+    <input type= "hidden" name="assignId" value= "<%= assignment['_id'] %>" >
+      </form>
+      </td>
+      <%}%>
+      </tr>
+  </table>
+  <%}%>
+<%}%>
+</td>
+

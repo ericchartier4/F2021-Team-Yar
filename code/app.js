@@ -33,7 +33,7 @@ app.use (passport.initialize());
 app.use (passport.session());
 
 app.set( "view engine", "ejs" );
-
+app.set("views","./views");
 
 // connect to mongoose on port 27017
 mongoose.connect( 'mongodb://localhost:27017/taskmaster', 
@@ -136,10 +136,12 @@ let [moreThanHours, moreThanMinutes] = moreThanTimeString.split(':');
  
  if ( lessThanHours === moreThanHours && lessThanMinutes < moreThanMinutes)
 {
+    
     result = true ;
 }
 else if (lessThanHours < moreThanHours )
 {
+    
     result = true;
 }
 

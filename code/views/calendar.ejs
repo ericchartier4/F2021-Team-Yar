@@ -87,254 +87,104 @@
           </tr>
         </thead>
         <tbody> <!-- lot of rows, maybe only shown if  data item within hour? -ELC -->
-        <% for (let assignment of assignmentInfoList)
-        { %>  
+      
           <tr class="hour12AM">
             <th scope="row">12 AM </th>
-            <%  if ((isLessThan24HourStrings("-1:59",assignment["dueTime24Hour"]))&& (isLessThan24HourStrings(assignment["dueTime24Hour"],"1:00")))
-              { %>
-                <%- include("partials/calendar-module2.ejs", { assignment : assignment, isInstructor:isInstructor }) -%>
-            <%}%>
+            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:isInstructor,endLastHour:"-01:59" , nextHour:"01:00"}) -%>
           </tr>
           <tr class="hour1AM">
             <th scope="row">1 AM </th>
-         
+            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:isInstructor,endLastHour:"00:59" , nextHour:"02:00"}) -%>
           </tr>
           <tr class="hour2AM">
             <th scope="row">2 AM </th>
-     
+            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:isInstructor,endLastHour:"01:59" , nextHour:"02:00"}) -%>
           </tr>
           <tr class="hour3AM">
             <th scope="row">3 AM </th>
-        
+            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:isInstructor,endLastHour:"02:59" , nextHour:"04:00"}) -%>
           </tr>
           <tr class="hour4AM">
             <th scope="row">4 AM </th>
-          
+            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:isInstructor,endLastHour:"03:59" , nextHour:"05:00"}) -%>
           </tr>
           <tr class="hour5AM">
             <th scope="row">5 AM </th>
-            <td class="sunday"></td>
-            <td class="monday"></td>
-            <td class="tuesday"></td>
-            <td class="wednesday"></td>
-            <td class="thursday"></td>
-            <td class="friday"></td>
-            <td class="saturday"></td>
+            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:isInstructor,endLastHour:"04:59" , nextHour:"06:00"}) -%>
           </tr>
           <tr class="hour6AM">
             <th scope="row">6 AM </th>
-            <td class="sunday"></td>
-            <td class="monday"></td>
-            <td class="tuesday"></td>
-            <td class="wednesday"></td>
-            <td class="thursday"></td>
-            <td class="friday"></td>
-            <td class="saturday"></td>
+            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:isInstructor,endLastHour:"05:59" , nextHour:"07:00"}) -%>
           </tr>
           <tr class="hour7AM">
             <th scope="row">7 AM </th>
-            <td class="sunday"></td>
-            <td class="monday"></td>
-            <td class="tuesday"></td>
-            <td class="wednesday"></td>
-            <td class="thursday"></td>
-            <td class="friday"></td>
-            <td class="saturday"></td>
+            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:isInstructor,endLastHour:"06:59" , nextHour:"08:00"}) -%>
           </tr>
           <tr class="hour8AM">
             <th scope="row">8 AM </th>
-            <td class="sunday"></td>
-            <td class="monday"></td>
-            <td class="tuesday"></td>
-            <td class="wednesday"></td>
-            <td class="thursday"></td>
-            <td class="friday"></td>
-            <td class="saturday"></td>
+            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:isInstructor,endLastHour:"07:59" , nextHour:"09:00"}) -%>
           </tr>
           <tr class="hour9AM">
             <th scope="row">9 AM </th>
-            <td class="sunday"></td>
-            <td class="monday"></td>
-            <td class="tuesday"></td>
-            <td class="wednesday"></td>
-            <td class="thursday"></td>
-            <td class="friday"></td>
-            <td class="saturday"></td>
+            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:isInstructor,endLastHour:"08:59" , nextHour:"10:00"}) -%>
           </tr>
           <tr class="hour10AM">
             <th scope="row">10 AM </th>
-            <td class="sunday"></td>
-            <td class="monday"></td>
-            <td class="tuesday"></td>
-            <td class="wednesday"></td>
-            <td class="thursday"></td>
-            <td class="friday"></td>
-            <td class="saturday"></td>
+            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:isInstructor,endLastHour:"09:59" , nextHour:"11:00"}) -%>
           </tr>
           <tr class="hour11AM">
             <th scope="row">11 AM </th>
-            <td class="sunday"></td>
-            <td class="monday"></td>
-            <td class="tuesday"></td>
-            <td class="wednesday"></td>
-            <td class="thursday"></td>
-            <td class="friday"></td>
-            <td class="saturday"></td>
+            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:isInstructor,endLastHour:"10:59" , nextHour:"12:00"}) -%>
           </tr>
           <tr class="hour12PM">
             <th scope="row">12 PM </th>
-            <td class="sunday"></td>
-            <td class="monday"></td>
-            <td class="tuesday"></td>
-            <td class="wednesday"></td>
-            <td class="thursday"></td>
-            <td class="friday"></td>
-            <td class="saturday"></td>
+            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:isInstructor,endLastHour:"11:59" , nextHour:"13:00"}) -%>
           </tr>
           <tr class="hour1PM">
             <th scope="row">1 PM </th>
-            <td class="sunday"></td>
-            <td class="monday"></td>
-            <td class="tuesday"></td>
-            <td class="wednesday"></td>
-            <td class="thursday">
-              <table>
-                <tr>
-                  <td>
-                    CS 215 Quiz @ 1:00
-                  </td>
-                  </tr>
-              </table>
-            </td>
-            <td class="friday"></td>
-            <td class="saturday"></td>
+            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:isInstructor,endLastHour:"12:59" , nextHour:"14:00"}) -%>
           </tr>
           <tr class="hour2PM">
             <th scope="row">2 PM </th>
-            <td class="sunday"></td>
-            <td class="monday"></td>
-            <td class="tuesday"></td>
-            <td class="wednesday"></td>
-            <td class="thursday"></td>
-            <td class="friday"></td>
-            <td class="saturday">
-              <table>
-                <tr>
-                  <td>
-                  CS 215 Midterm @ 2:00
-                  </td>
-                  </tr>
-              </table> 
-            </td>
+            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:isInstructor,endLastHour:"13:59" , nextHour:"15:00"}) -%>
           </tr>
           <tr class="hour3PM">
             <th scope="row">3 PM </th>
-            <td class="sunday"></td>
-            <td class="monday">
-                <table>
-                <tr>
-                  <td>
-                  ENSE374-001
-                  Assign#4 @ 3:00
-                  </td>
-                  </tr>
-                  <tr>
-                    <td>
-                    ENEL 384
-                    #Assignment 3 @ 3:00
-                    </td>
-                  </tr>
-              </table>
-            </td>
-            <td class="tuesday"></td>
-            <td class="wednesday">      
-            </td>
-            <td class="thursday"></td>
-            <td class="friday"></td>
-            <td class="saturday"></td>
+            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:isInstructor,endLastHour:"14:59" , nextHour:"16:00"}) -%>
           </tr>
           <tr class="hour4PM">
             <th scope="row">4 PM </th>
-            <td class="sunday"></td>
-            <td class="monday"></td>
-            <td class="tuesday"></td>
-            <td class="wednesday"></td>
-            <td class="thursday"></td>
-            <td class="friday"></td>
-            <td class="saturday"></td>
+            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:isInstructor,endLastHour:"15:59" , nextHour:"17:00"}) -%>
           </tr>
           <tr class="hour5PM">
             <th scope="row">5 PM </th>
-            <td class="sunday"></td>
-            <td class="monday"></td>
-            <td class="tuesday"></td>
-            <td class="wednesday"></td>
-            <td class="thursday"></td>
-            <td class="friday"></td>
-            <td class="saturday"></td>
+            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:isInstructor,endLastHour:"16:59" , nextHour:"18:00"}) -%>
           </tr>
           <tr class="hour6PM">
             <th scope="row">6 PM </th>
-            <td class="sunday"></td>
-            <td class="monday"></td>
-            <td class="tuesday"></td>
-            <td class="wednesday"></td>
-            <td class="thursday"></td>
-            <td class="friday"></td>
-            <td class="saturday"></td>
+            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:isInstructor,endLastHour:"17:59" , nextHour:"19:00"}) -%>
           </tr>
           <tr class="hour7PM">
             <th scope="row">7 PM </th>
-            <td class="sunday"></td>
-            <td class="monday"></td>
-            <td class="tuesday"></td>
-            <td class="wednesday"></td>
-            <td class="thursday"></td>
-            <td class="friday"></td>
-            <td class="saturday"></td>
+            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:isInstructor,endLastHour:"18:59" , nextHour:"20:00"}) -%>
           </tr>
           <tr class="hour8PM">
             <th scope="row">8 PM </th>
-            <td class="sunday"></td>
-            <td class="monday"></td>
-            <td class="tuesday"></td>
-            <td class="wednesday"></td>
-            <td class="thursday"></td>
-            <td class="friday"></td>
-            <td class="saturday"></td>
+            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:isInstructor,endLastHour:"19:59" , nextHour:"21:00"}) -%>
           </tr>
           <tr class="hour9PM">
             <th scope="row">9 PM </th>
-            <td class="sunday"></td>
-            <td class="monday"></td>
-            <td class="tuesday"></td>
-            <td class="wednesday"></td>
-            <td class="thursday"></td>
-            <td class="friday"></td>
-            <td class="saturday"></td>
+            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:isInstructor,endLastHour:"20:59" , nextHour:"22:00"}) -%>
           </tr>
           <tr class="hour10PM">
             <th scope="row">10 PM </th>
-            <td class="sunday"></td>
-            <td class="monday"></td>
-            <td class="tuesday"></td>
-            <td class="wednesday"></td>
-            <td class="thursday"></td>
-            <td class="friday"></td>
-            <td class="saturday"></td>
+            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:isInstructor,endLastHour:"21:59" , nextHour:"23:00"}) -%>
           </tr>
           <tr class="hour11PM">
             <th scope="row">11 PM </th>
-            <td class="sunday"></td>
-            <td class="monday"></td>
-            <td class="tuesday"></td>
-            <td class="wednesday"></td>
-            <td class="thursday"></td>
-            <td class="friday"></td>
-            <td class="saturday"></td>
+            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:isInstructor,endLastHour:"22:59" , nextHour:"24:00"}) -%>
           </tr>
-        <%}%>
+        
         </tbody>
       </table>
     </div>
