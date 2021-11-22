@@ -11,7 +11,8 @@ const mongoose = require( "mongoose" );
 
 const session = require("express-session")
 const passport = require("passport")
-const passportLocalMongoose = require("passport-local-mongoose")
+const passportLocalMongoose = require("passport-local-mongoose");
+const { log } = require("console");
 require("dotenv").config();
 
 const app = express(); 
@@ -210,6 +211,7 @@ async function getSundayOfNextWeek(sundayOfWeek)
 
 async function  getCourseList(userId)
 {
+    
 let Courses=[];
 let courseListArray = await User.findOne({_id:userId});
 courseListArray= courseListArray["listOfCourses"];
@@ -221,13 +223,14 @@ Courses.push(viewSingleCourse);
 return Courses;
 }
 
- async function getAssignmentsOfWeekMultipleCourses(courseListArray, sundayOfWeek)
+ async function getAssignmentsOfWeek(courseListArray, sundayOfWeek)
 {
     let userAssignments = []; 
-    
+   
     let sundayOfNextWeek = new Date(await getSundayOfNextWeek(sundayOfWeek));
     for (let i of courseListArray)
-    {
+    {      
+        
         let viewAssignmentList = await Course.findOne({_id: i });
         viewAssignmentList= viewAssignmentList["assignmentList"];
         for (let j of viewAssignmentList)
@@ -246,28 +249,7 @@ return Courses;
     return userAssignments
 }
 
-async function getAssignmentsOfWeekSingleCourse(courseId,sundayOfWeek)
-{
-    let userAssignments = []; 
-    let sundayOfNextWeek =  new Date (await getSundayOfNextWeek(sundayOfWeek));
-    
-        let viewCourse = await Course.findOne({_id: "111111111111111111111111" });
-        
-        viewCourse= viewCourse["assignmentList"];
-        for (let i of viewCourse)
-        {
-         let viewSingleAssignment = await Assignment.findOne({_id:i});
-         let assignmentDueDate = viewSingleAssignment["dueDate"];
-         assignmentDueDate= new Date(assignmentDueDate);
-            
-            if (assignmentDueDate.getTime()>=sundayOfWeek.getTime()&& assignmentDueDate.getTime() <= sundayOfNextWeek.getTime())
-            {
-               userAssignments.push(viewSingleAssignment);
-            }
-        }
-    
-    return userAssignments
-}
+
 
 async function getCourseNameOfAssignment(assignmentId,courseList)
 {
@@ -338,6 +320,8 @@ async function getAssignmentTime12HourString(assignmentId)
 app.get( "/calendar", async( req, res ) => {  // wiil have to make these redirect to diffrent sub redirects , should not be too hard. 
 
     console.log ("user attempting to access calender")
+
+    // will assess if student or instructor
     res.redirect("/studentCalendar")
 });
 
@@ -349,20 +333,52 @@ app.get ("/instructorCalendar", async(req,res)=>{
         req.session.calendarDatePointer.setSeconds(0);
         req.session.calendarDatePointer.setMilliseconds(0);
       }
-    if (!req.session.instructorCoursePointer )
+    if (!req.session.instructorCourseIdPointer )
     {
-         req.session.instructorCourseIdPointer ="111111111111111111111111"; // will replace with the first course of instructors course list 
+        let firstCourse = await User.findOne({_id:"111111111111111111111111"})
+        firstCourse = firstCourse["listOfCourses"]
+       
+        if (firstCourse !== null )
+        { 
+        firstcourse = firstCourse[0] 
+        if ( firstCourse !== null)
+        {
+          req.session.instructorCourseIdPointer = firstCourse[0];
+        }
+        else 
+        {
+        req.session.instructorCourseIdPointer=null;
+        }
+        }
+        else 
+        {
+            req.session.instructorCourseIdPointer=null;
+        }
+         ; // will replace with the first course of instructors course list 
     }
     let dayofWeek = req.session.calendarDatePointer.getDay(); //returns 0= sunday , 1 = monday...
     let sundayOfWeek = req.session.calendarDatePointer;
     sundayOfWeek.setDate(sundayOfWeek.getDate()-dayofWeek);
     let saturdayOfWeek =  new Date(await getSaturdayOfWeek(sundayOfWeek));
     let sundayOfNextWeek =  new Date (await  getSundayOfNextWeek(sundayOfWeek));
-    let courseList = req.sessioninstructorCourseIdPointer; // using courselist to simplify creation of ejs. just single course 
-    let assignmentList = await getAssignmentsOfWeekSingleCourse(courseList,sundayOfNextWeek)
-
+     
+    let courseList
+    let assignmentList ; 
+     if( req.session.instructorCourseIdPointer !== null)
+     {
+     courseList = new Array( req.session.instructorCourseIdPointer);// using courselist to simplify creation of ejs.  but single course only 
+     assignmentList = await getAssignmentsOfWeek(courseList,sundayOfWeek)
+     assignmentList = await sortAssignmentsByDueDate(assignmentList);
+     }
+     else
+     {
+        courseList =null; //course list needed for ejs select form 
+        assignmentList = null;
+     }
+     
+   
     
-    assignmentList = await sortAssignmentsByDueDate(assignmentList);
+    
     res.render("calendar", { courseList:courseList, assignmentList:assignmentList, sundayOfWeek:sundayOfWeek, saturdayOfWeek:saturdayOfWeek, isLessThan24HourStrings:isLessThan24HourStrings ,get12HourFrom24HourString:get12HourFrom24HourString, currentCourse: req.session.instructorCourseIdPointer }); 
 
 
@@ -378,15 +394,26 @@ app.get("/studentCalendar", async(req,res)=>{
         req.session.calendarDatePointer.setSeconds(0);
         req.session.calendarDatePointer.setMilliseconds(0);
       }
+    
     let dayofWeek = req.session.calendarDatePointer.getDay(); //returns 0= sunday , 1 = monday...
     let sundayOfWeek = req.session.calendarDatePointer;
     sundayOfWeek.setDate(sundayOfWeek.getDate()-dayofWeek);
     let saturdayOfWeek =  new Date( await getSaturdayOfWeek(sundayOfWeek));
     let sundayOfNextWeek =  new Date (getSundayOfNextWeek(sundayOfWeek));
-    let courseList =  await getCourseList("111111111111111111111111")
-                                                            //change to req.user._id when time comes 
-    let assignmentList =  await getAssignmentsOfWeekMultipleCourses(courseList, sundayOfWeek)
-    assignmentList = await sortAssignmentsByDueDate(assignmentList);
+    let courseList  =  await getCourseList("111111111111111111111111")
+    let assignmentList
+   
+    if (courseList !== null)
+    {
+        
+        assignmentList =  await getAssignmentsOfWeek(courseList, sundayOfWeek)
+        assignmentList = await sortAssignmentsByDueDate(assignmentList);
+    }                                                        
+    else 
+    {
+        assignmentList = null;
+    }
+   
     
     res.render("calendar",  {courseList:courseList, assignmentList:assignmentList, sundayOfWeek:sundayOfWeek, saturdayOfWeek:saturdayOfWeek ,  isLessThan24HourStrings:isLessThan24HourStrings ,get12HourFrom24HourString:get12HourFrom24HourString})
 
