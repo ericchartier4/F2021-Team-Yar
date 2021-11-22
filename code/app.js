@@ -337,6 +337,26 @@ async function getAssignmentTime12HourString(assignmentId)
    return assignmentTime;
 }
 
+async function getAssignmentInfoForPrint(assignmentList, courseList)
+{
+   let assignmentInfoArray=[]
+   
+   for ( let i of assignmentList)
+   {
+       let assignmentContainer = { _id:i["_id"], 
+        assignmentName: await getAssignmentName(i),
+        courseName: await getCourseNameOfAssignment(i["_id"],courseList) ,
+        courseSection:  await getCourseSectionOfAssignment(i["_id"],courseList),
+        dueDateInWeek: await getAssignmentDueDateInWeek(i) , 
+        dueTime24Hour: i["dueTime"] ,
+        dueTime12Hour:  await getAssignmentTime12HourString(i) }
+        assignmentInfoArray.push(assignmentContainer)
+   } 
+
+   return assignmentInfoArray;
+
+
+} 
 app.get( "/calendar", async( req, res ) => {  // wiil have to make these redirect to diffrent sub redirects , should not be too hard. 
 
     console.log ("user attempting to access calender")
@@ -389,6 +409,7 @@ app.get ("/instructorCalendar", async(req,res)=>{
      courseList = new Array( req.session.instructorCourseIdPointer);// using courselist to simplify creation of ejs.  but single course only 
      assignmentList = await getAssignmentsOfWeek(courseList,sundayOfWeek)
      assignmentList = await sortAssignmentsByDueDate(assignmentList);
+     assignmentInfoList = await getAssignmentInfoForPrint(assignmentList,courseList);
      }
      else
      {
@@ -399,7 +420,7 @@ app.get ("/instructorCalendar", async(req,res)=>{
    
     
     
-    res.render("calendar", { courseList:courseList, assignmentList:assignmentList, sundayOfWeek:sundayOfWeek, saturdayOfWeek:saturdayOfWeek, getCourseNameOfAssignment:getCourseNameOfAssignment, getCourseSectionOfAssignment:getCourseSectionOfAssignment, getAssignmentDueDateInWeek:getAssignmentDueDateInWeek,getAssignmentTime12HourString, isLessThan24HourStrings:isLessThan24HourStrings ,currentCourse: req.session.instructorCourseIdPointer }); 
+    res.render("calendar", {  assignmentInfoList:assignmentInfoList, sundayOfWeek:new Date(sundayOfWeek),saturdayOfWeek:new Date(saturdayOfWeek),  isLessThan24HourStrings:isLessThan24HourStrings ,currentCourse: req.session.instructorCourseIdPointer, courseList:courseList}); 
 
 
 
@@ -428,6 +449,8 @@ app.get("/studentCalendar", async(req,res)=>{
         
         assignmentList =  await getAssignmentsOfWeek(courseList, sundayOfWeek)
         assignmentList = await sortAssignmentsByDueDate(assignmentList);
+        assignmentInfoList = await getAssignmentInfoForPrint(assignmentList,courseList);
+      
     }                                                        
     else 
     {
@@ -438,7 +461,7 @@ app.get("/studentCalendar", async(req,res)=>{
     
 
 
-    res.render("calendar", { courseList:courseList, assignmentList:assignmentList, sundayOfWeek:sundayOfWeek, saturdayOfWeek:saturdayOfWeek, getCourseNameOfAssignment:getCourseNameOfAssignment, getCourseSectionOfAssignment:getCourseSectionOfAssignment, getAssignmentDueDateInWeek:getAssignmentDueDateInWeek,getAssignmentTime12HourString, isLessThan24HourStrings:isLessThan24HourStrings }); 
+    res.render("calendar", { assignmentInfoList:assignmentInfoList, sundayOfWeek: new Date (sundayOfWeek), saturdayOfWeek:new Date(saturdayOfWeek) , isLessThan24HourStrings:isLessThan24HourStrings }); 
 
 })
 
