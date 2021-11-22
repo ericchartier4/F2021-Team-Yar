@@ -7,7 +7,8 @@
       <tr>
         <td>
         <%= assignment["courseName"]%>
-        <%= assignment["courseSection"]%>  
+        <%= assignment["courseSection"]%>
+        &nbsp  
         <%= assignment["assignmentName"]%>
          &nbsp
         <%= assignment["dueTime12Hour"] %>
@@ -16,7 +17,7 @@
       <% if(isInstructor === true )
       { %> 
         <td>    
-        <form>
+        <form action="/editassignment" method="get">
       <input type="submit" value="edit">
       <input type= "hidden" name="assignId" value= "<%= assignment['_id'] %>" >
         </form>
@@ -36,7 +37,8 @@
       <tr>
         <td>
         <%= assignment["courseName"]%>
-        <%= assignment["courseSection"]%>  
+        <%= assignment["courseSection"]%>
+        &nbsp  
         <%= assignment["assignmentName"]%>
          &nbsp
         <%= assignment["dueTime12Hour"] %>
@@ -45,7 +47,7 @@
       <% if(isInstructor === true )
       { %> 
         <td>    
-        <form>
+        <form action="/editassignment" method="get">
       <input type="submit" value="edit">
       <input type= "hidden" name="assignId" value= "<%= assignment['_id'] %>" >
         </form>
@@ -65,7 +67,8 @@
       <tr>
         <td>
         <%= assignment["courseName"]%>
-        <%= assignment["courseSection"]%>  
+        <%= assignment["courseSection"]%> 
+        &nbsp 
         <%= assignment["assignmentName"]%>
          &nbsp
         <%= assignment["dueTime12Hour"] %>
@@ -74,7 +77,7 @@
       <% if(isInstructor === true )
       { %> 
         <td>    
-        <form>
+        <form action="/editassignment" method="get">
       <input type="submit" value="edit">
       <input type= "hidden" name="assignId" value= "<%= assignment['_id'] %>" >
         </form>
@@ -94,7 +97,8 @@
     <tr>
       <td>
       <%= assignment["courseName"]%>
-      <%= assignment["courseSection"]%>  
+      <%= assignment["courseSection"]%>
+      &nbsp  
       <%= assignment["assignmentName"]%>
        &nbsp
       <%= assignment["dueTime12Hour"] %>
@@ -103,7 +107,7 @@
     <% if(isInstructor === true )
     { %> 
       <td>    
-      <form>
+      <form action="/editassignment" method="get">
     <input type="submit" value="edit">
     <input type= "hidden" name="assignId" value= "<%= assignment['_id'] %>" >
       </form>
@@ -123,7 +127,8 @@
       <tr>
         <td>
         <%= assignment["courseName"]%>
-        <%= assignment["courseSection"]%>  
+        <%= assignment["courseSection"]%>
+        &nbsp  
         <%= assignment["assignmentName"]%>
          &nbsp
         <%= assignment["dueTime12Hour"] %>
@@ -132,7 +137,7 @@
       <% if(isInstructor === true )
       { %> 
         <td>    
-        <form>
+        <form action="/editassignment" method="get">
       <input type="submit" value="edit">
       <input type= "hidden" name="assignId" value= "<%= assignment['_id'] %>" >
         </form>
@@ -152,7 +157,8 @@
       <tr>
         <td>
         <%= assignment["courseName"]%>
-        <%= assignment["courseSection"]%>  
+        <%= assignment["courseSection"]%>
+        &nbsp  
         <%= assignment["assignmentName"]%>
          &nbsp
         <%= assignment["dueTime12Hour"] %>
@@ -161,7 +167,7 @@
       <% if(isInstructor === true )
       { %> 
         <td>    
-        <form>
+        <form action="/editassignment" method="get">
       <input type="submit" value="edit">
       <input type= "hidden" name="assignId" value= "<%= assignment['_id'] %>" >
         </form>
@@ -181,7 +187,8 @@
     <tr>
       <td>
       <%= assignment["courseName"]%>
-      <%= assignment["courseSection"]%>  
+      <%= assignment["courseSection"]%> 
+      &nbsp 
       <%= assignment["assignmentName"]%>
        &nbsp
       <%= assignment["dueTime12Hour"] %>
@@ -190,7 +197,7 @@
     <% if(isInstructor === true )
     { %> 
       <td>    
-      <form>
+        <form action="/editassignment" method="get">
     <input type="submit" value="edit">
     <input type= "hidden" name="assignId" value= "<%= assignment['_id'] %>" >
       </form>

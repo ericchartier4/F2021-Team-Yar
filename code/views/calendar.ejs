@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-  <% let isInstructor = false; %>
+  <% let isInstructor = true; %>
 
 <head>
   <meta charset="UTF-8">
@@ -189,6 +189,36 @@
       </table>
     </div>
 </div>
+<% if (isInstructor === true)
+{ %>
+<div class="calendarFooter ">
+  <table class="table table-borderless container text-center  align-items-center ">
+      <tr>
+        <td></td>
+        <td></td>
+      <td></td>
+      </tr>
+       <tr>
+      <td></td>        
+        <td>
+        <h3> Course Code: XYAK2314 </h3> 
+        </td>
+        <td>
+          <form action="/addcourse" method="get">
+           <input type="submit" value="Add Course"class="btn btn-primary"> 
+          </form>
+        </td>
+        <td>
+          <form action="/addassignment" method="get">
+            <input type="submit" value="Add Assignment"class="btn btn-primary"> 
+           </form>
+
+          
+        </td>
+        </tr>
+      </table>
+</div>
+<% } %>
 <!-- JavaScript Bundle with Popper -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
 </body>
