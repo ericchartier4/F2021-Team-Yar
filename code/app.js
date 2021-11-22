@@ -108,11 +108,31 @@ app.post( "/login", ( req, res ) => {
 //get rid of it if you aren't going to need it -MK
 
 
-function isLessThan24HourStrings(  lessThanTime, moreThanTime) {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function isLessThan24HourStrings(  lessThanTimeString, moreThanTimeString) {
 let result = false;
 
-let [lessThanHours, lessThanMinutes] = lessThanTime.split(':');
-let [moreThanHours, moreThanMinutes] = moreThanTime.split(':');
+let [lessThanHours, lessThanMinutes] = lessThanTimeString.split(':');
+let [moreThanHours, moreThanMinutes] = moreThanTimeString.split(':');
  
  if ( lessThanHours === moreThanHours && lessThanMinutes < moreThanMinutes)
 {
@@ -379,7 +399,7 @@ app.get ("/instructorCalendar", async(req,res)=>{
    
     
     
-    res.render("calendar", { courseList:courseList, assignmentList:assignmentList, sundayOfWeek:sundayOfWeek, saturdayOfWeek:saturdayOfWeek, isLessThan24HourStrings:isLessThan24HourStrings ,get12HourFrom24HourString:get12HourFrom24HourString, currentCourse: req.session.instructorCourseIdPointer }); 
+    res.render("calendar", { courseList:courseList, assignmentList:assignmentList, sundayOfWeek:sundayOfWeek, saturdayOfWeek:saturdayOfWeek, getCourseNameOfAssignment:getCourseNameOfAssignment, getCourseSectionOfAssignment:getCourseSectionOfAssignment, getAssignmentDueDateInWeek:getAssignmentDueDateInWeek,getAssignmentTime12HourString, isLessThan24HourStrings:isLessThan24HourStrings ,currentCourse: req.session.instructorCourseIdPointer }); 
 
 
 
@@ -415,12 +435,27 @@ app.get("/studentCalendar", async(req,res)=>{
     }
    
     
-    res.render("calendar",  {courseList:courseList, assignmentList:assignmentList, sundayOfWeek:sundayOfWeek, saturdayOfWeek:saturdayOfWeek ,  isLessThan24HourStrings:isLessThan24HourStrings ,get12HourFrom24HourString:get12HourFrom24HourString})
+    
 
 
-
+    res.render("calendar", { courseList:courseList, assignmentList:assignmentList, sundayOfWeek:sundayOfWeek, saturdayOfWeek:saturdayOfWeek, getCourseNameOfAssignment:getCourseNameOfAssignment, getCourseSectionOfAssignment:getCourseSectionOfAssignment, getAssignmentDueDateInWeek:getAssignmentDueDateInWeek,getAssignmentTime12HourString, isLessThan24HourStrings:isLessThan24HourStrings }); 
 
 })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //in theory this one should already work - MK
 app.get( "/logout", ( req, res ) => {
     console.log( "A user is logging out" );
