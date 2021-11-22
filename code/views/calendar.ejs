@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-  <% let isInstructor = true; %>
+  <% let isInstructor = false; %>
 
 <head>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -85,35 +85,7 @@
         <tbody> <!-- lot of rows, maybe only shown if  data item within hour? -ELC -->
           <tr class="hour12AM">
             <th scope="row">12 AM </th>
-            
-            <td class="sunday">
-            
-                    
-                    
-                  
-                  
-                  <table>
-                    <tr>
-                      <td>
-                       Assign#3@11:59 
-                      </td>
-                      <td>
-                      <form>
-                    <input type="submit" value="edit">
-                    <input type= "hidden" name="_id">
-                      </form>
-                      </td>
-                      </tr>
-                  </table>
-                )
-                } 
-
-
-
-
-
-
-            </td>
+            <td class="sunday"></td>
             <td class="monday"></td>
             <td class="tuesday"></td>
             <td class="wednesday"></td>
@@ -300,7 +272,34 @@
             <td class="wednesday">
               <% for (let  assignment of  assignmentInfoList)
                     {
-                      
+                      if ((isLessThan24HourStrings("12:59",assignment["dueTime24Hour"]))&& (isLessThan24HourStrings(assignment["dueTime24Hour"],"4:00")) && (assignment["dueDateInWeek"]===3 ))
+                      {
+                        %> 
+
+                        <%- include("partials/calendar-module.ejs", { ass : fruits }) -%>
+                        <table>
+                          <tr>
+                            <td>
+                            <%= assignment["courseName"]%>
+                            <%= assignment["courseSection"]%>  
+                            <%= assignment["assignmentName"]%>
+                             &nbsp
+                            <%= assignment["dueTime12Hour"] %>
+                            </td>
+                           
+                          <% if(isInstructor === true )
+                          { %> 
+                            <td>    
+                            <form>
+                          <input type="submit" value="edit">
+                          <input type= "hidden" name="assignId" value= "<%= assignment['_id'] %>" >
+                            </form>
+                            </td>
+                            <%}%>
+                            </tr>
+                        </table>
+                    <%
+                      }
                     }%> 
             </td>
             <td class="thursday"></td>

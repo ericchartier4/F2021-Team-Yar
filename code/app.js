@@ -458,7 +458,7 @@ app.get("/studentCalendar", async(req,res)=>{
     }
    
     
-    
+    console.log(assignmentInfoList)
 
 
     res.render("calendar", { assignmentInfoList:assignmentInfoList, sundayOfWeek: new Date (sundayOfWeek), saturdayOfWeek:new Date(saturdayOfWeek) , isLessThan24HourStrings:isLessThan24HourStrings }); 
