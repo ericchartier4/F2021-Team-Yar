@@ -333,7 +333,7 @@ async function getAssignmentTime12HourString(assignmentId)
     result = result + "AM";
  }
 return result; 
-   
+   return assignmentTime;
 }
 
 async function getAssignmentInfoForPrint(assignmentList, courseList)
@@ -641,11 +641,19 @@ app.post( "/jncourse", async( req, res ) => {
 });
 
  app.get( "/nextweek", async( req, res ) => {
-    // will take the date ( or sunday date) , and offset by -7 day and return to render calander with new date. -Elc  
+    
+    let weekIncrament = await new Date( req.session.calendarDatePointer);
+    await weekIncrament.setDate(weekIncrament.getDate()+7);
+    req.session.calendarDatePointer = weekIncrament;
+    res.redirect("/calendar")
+    
  });
 
  app.get( "/lastweek", async( req, res ) => {
-    // will take the date ( or sunday date) , and offset by +7 day and return to render calander with new date. -Elc  
+    let weekDecrament = await new Date( req.session.calendarDatePointer);
+    await weekDecrament.setDate(weekDecrament.getDate()-7);
+    req.session.calendarDatePointer = weekDecrament;
+    res.redirect("/calendar")
  
  });
 
