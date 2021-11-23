@@ -398,8 +398,9 @@ app.get ("/instructorCalendar", async(req,res)=>{
         }
          ; // will replace with the first course of instructors course list 
     }
-    let dayofWeek = req.session.calendarDatePointer.getDay(); //returns 0= sunday , 1 = monday...
-    let sundayOfWeek = req.session.calendarDatePointer;
+    let dayofWeek =  await new Date( req.session.calendarDatePointer); //returns 0= sunday , 1 = monday...
+    dayofWeek = dayofWeek.getDay();
+    let sundayOfWeek = new Date (req.session.calendarDatePointer);
     sundayOfWeek.setDate(sundayOfWeek.getDate()-dayofWeek);
     let saturdayOfWeek =  new Date(await getSaturdayOfWeek(sundayOfWeek));
     let sundayOfNextWeek =  new Date (await  getSundayOfNextWeek(sundayOfWeek));
@@ -438,10 +439,11 @@ app.get("/studentCalendar", async(req,res)=>{
         req.session.calendarDatePointer.setMilliseconds(0);
       }
     
-    let dayofWeek = req.session.calendarDatePointer.getDay(); //returns 0= sunday , 1 = monday...
-    let sundayOfWeek = req.session.calendarDatePointer;
-    sundayOfWeek.setDate(sundayOfWeek.getDate()-dayofWeek);
-    let saturdayOfWeek =  new Date( await getSaturdayOfWeek(sundayOfWeek));
+    let dayofWeek =  await new Date( req.session.calendarDatePointer); //returns 0= sunday , 1 = monday...
+    dayofWeek = dayofWeek.getDay();
+    let sundayOfWeek =  await new Date ( req.session.calendarDatePointer);
+     await sundayOfWeek.setDate(sundayOfWeek.getDate()-dayofWeek);
+    let saturdayOfWeek =   new Date( await getSaturdayOfWeek(sundayOfWeek));
     let sundayOfNextWeek =  new Date (getSundayOfNextWeek(sundayOfWeek));
     let courseList  =  await getCourseList("111111111111111111111111")
     let assignmentList
