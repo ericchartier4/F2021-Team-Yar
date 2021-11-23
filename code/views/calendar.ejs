@@ -21,7 +21,7 @@
     <td>
       <% if( isInstructor !== true)
       { %>
-      <form action="/joincourse" method="get">
+      <form action="/joincourse" method="post">
       <input type="submit" class="btn btn-primary" value="Join Course">
     </form>
     <%}%>
@@ -204,12 +204,12 @@
         <h3> Course Code: XYAK2314 </h3> 
         </td>
         <td>
-          <form action="/addcourse" method="get">
+          <form action="/addcourse" method="post">
            <input type="submit" value="Add Course"class="btn btn-primary"> 
           </form>
         </td>
         <td>
-          <form action="/addassignment" method="get">
+          <form action="/addassignment" method="post">
             <input type="submit" value="Add Assignment"class="btn btn-primary"> 
            </form>
 
