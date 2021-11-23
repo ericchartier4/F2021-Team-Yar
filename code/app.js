@@ -489,13 +489,13 @@ app.get( "/logout", ( req, res ) => {
 });
 
 //Mackenzie's 4 pages
-app.get( "/addassignment", ( req, res ) => {
+app.post( "/addassignment", ( req, res ) => {
     //check if user is authenticated before rendering - will need to do this later on once login/signup is done
     console.log("user accessed the add assignment page");
     res.render("addassignment", {courseId: "111111111111111111111111"}); //replace hardcoded value with req.body.variable from eric's form
 });
 
-app.post("/addassignment", async( req, res ) => {
+app.post("/addassign", async( req, res ) => {
     console.log(req.body);
 
     date = req.body.dueDate;
@@ -517,11 +517,11 @@ app.post("/addassignment", async( req, res ) => {
     res.redirect("/calendar");
 });
 
-app.get( "/editassignment", async( req, res ) => {
+app.post( "/editassignment", async( req, res ) => {
     //check if user is authenticated before rendering - will need to do this later on once login/signup is done
     console.log("user accessed the edit assignment page");
-
-    let assignId = "111111111111111111111113" //replace hardcoded value with req.body.variable from eric's form
+    console.log(req.body)
+    let assignId = req.body.assignId
     const results = await Assignment.find();
     let match = false;
         for(i=0; i< results.length; i++){
@@ -542,10 +542,8 @@ app.get( "/editassignment", async( req, res ) => {
         }
 });
 
-app.post( "/editassignment", async( req, res ) => {
+app.post( "/edassign", async( req, res ) => {
     console.log(req.body);
-    //will need to know which assignment is being edited
-    //update assignment with info from req.body
     date = req.body.dueDate;
     fixedDate = date.substr(0,4)+"/"+date.substr(5,2)+"/"+date.substr(8,2);
     
@@ -560,13 +558,13 @@ app.post( "/editassignment", async( req, res ) => {
     res.redirect("/calendar");
 });
 
-app.get( "/addcourse", ( req, res ) => {
+app.post( "/addcourse", ( req, res ) => {
     //check if user is authenticated before rendering - will need to do this later on once login/signup is done
     console.log("user accessed the add course page");
     res.render("addcourse", {instrucId: "111111111111111111111111"}); //replace hardcoded value with req.user.userid - passport
 });
 
-app.post( "/addcourse", async( req, res ) => {
+app.post( "/newcourse", async( req, res ) => {
     console.log(req.body);
 
     const results = await Course.find();
@@ -603,13 +601,13 @@ app.post( "/addcourse", async( req, res ) => {
     res.redirect("/calendar");
 });
 
-app.get( "/joincourse", ( req, res ) => {
+app.post( "/joincourse", ( req, res ) => {
     //check if user is authenticated before rendering - will need to do this later on once login/signup is done
     console.log("user accessed the join course page");
     res.render("joincourse", {studId: "111111111111111111111111"}); //replace hardcoded value with req.user.userid - passport
 });
 
-app.post( "/joincourse", async( req, res ) => {
+app.post( "/jncourse", async( req, res ) => {
     //need student id from req.user.username/id
     //add student's id to add to the course's studentList
     //add course id (if course exists) to the student's listOfCourses
