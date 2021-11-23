@@ -148,39 +148,7 @@ else if (lessThanHours < moreThanHours )
 return result; 
 };
 
-function get12HourFrom24HourString(hourStringinput)
-{
- let result;
- let [hour, minutes] = hourStringinput.split(':');
- if ( hour > 12 ){
-     hour = hour - 12
-     if ( hour === 12 || hour === 11 || hour === 10 )
-     {
-     result = hour.toString();
-     result = result + ":" ;
-     result = result + minutes;
-     result = result + "PM";
-     }
-     else
-     {
-     result = "0"
-     result = result + hour.toString();
-     result = result + ":" ;
-     result = result + minutes;
-     result = result + "PM";
-     }
-     
-}
- else 
- {
-    
-    result = hour.toString();
-    result = result + ":" ;
-    result = result + minutes;
-    result = result + "AM";
- }
-return result; 
-}
+
 
 function sortAssignmentsByDueDate(arrayInput)
 {
@@ -335,8 +303,37 @@ async function getAssignmentTime12HourString(assignmentId)
 {
    let assignmentTime = await Assignment.findOne({_id:assignmentId})
    assignmentTime=assignmentTime["dueTime"];
-   assignmentTime =  await get12HourFrom24HourString(assignmentTime);
-   return assignmentTime;
+   let result;
+ let [hour, minutes] = assignmentTime.split(':');
+ if ( hour > 12 ){
+     hour = hour - 12
+     if ( hour === 12 || hour === 11 || hour === 10 )
+     {
+     result = hour.toString();
+     result = result + ":" ;
+     result = result + minutes;
+     result = result + "PM";
+     }
+     else
+     {
+     result = "0"
+     result = result + hour.toString();
+     result = result + ":" ;
+     result = result + minutes;
+     result = result + "PM";
+     }
+     
+}
+ else 
+ {
+    
+    result = hour.toString();
+    result = result + ":" ;
+    result = result + minutes;
+    result = result + "AM";
+ }
+return result; 
+   
 }
 
 async function getAssignmentInfoForPrint(assignmentList, courseList)
