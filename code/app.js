@@ -12,6 +12,9 @@ const mongoose = require( "mongoose" );
 const session = require("express-session")
 const passport = require("passport")
 const passportLocalMongoose = require("passport-local-mongoose");
+const User = require("./models/user").User;
+const Assignment = require("./models/assignment");
+const Course = require("./models/course");
 const { log } = require("console");
 require("dotenv").config();
 
@@ -21,6 +24,7 @@ app.use(express.static("public"));
 const port = 3000; 
 
 // body-parser is now built into express!
+app.use(express.json());
 app.use( express.urlencoded( { extended: true} ) ); 
 
 app.use(session({
@@ -34,6 +38,9 @@ app.use (passport.session());
 
 app.set( "view engine", "ejs" );
 app.set("views","./views");
+
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 // connect to mongoose on port 27017
 mongoose.connect( 'mongodb://localhost:27017/taskmaster', 
@@ -89,20 +96,88 @@ app.listen ( port, () => {
     console.log ( `Server is running on http://localhost:${port}` );
 });
 
-app.get( "/", ( req, res ) => {
-    console.log( "A user is accessing the root route using get" );
-    res.render("login"); //need login.ejs before this works. Also check, maybe it's case sensitive? - MK
+app.get("/", (req, res) => {
+    console.log("A user is accessing the root route using get");
+    try {
+        if (req.isAuthenticated()) {
+            res.redirect("/calendar");
+        } else {
+            res.redirect("/login");
+        }
+    }
+    catch (error) {
+        console.error(error);
+        res.send(error);
+    }
 });
 
 //signup and login forms - Ify you might need 2 of /signup since the signup form for an instructor is different with the auth code
 //I think /login should work for both since they're the same? Do whatever you need to -MK
-app.post( "/signup", (req, res) => {
-   
+app.post("/signup", async (req, res) => {
+    try {
+        let username = req.body.username;
+        let password = req.body.password;
+        await saveUser(username, password, req.body.type == "instructor" ? true : false);
+        passport.authenticate("local")(req, res, () => {
+            res.redirect("/");
+        });
+    }
+    catch (error) {
+        console.error(error);
+        res.redirect("/login");
+    }
+});
+app.get("/login", (req, res) => {
+    try {
+        if (req.isAuthenticated()) {
+            res.redirect("/");
+        } else {
+            res.render("login", {});
+        }
+    }
+    catch (error) {
+        console.error(error);
+        res.send(error);
+    }
 });
 
-app.post( "/login", ( req, res ) => {
-   
+app.post("/login", (req, res) => {
+    try {
+        const user = new User({
+            username: req.body.username,
+            password: req.body.password
+        });
+        req.login(user, (err) => {
+            if (err) {
+                console.log(err);
+                res.redirect("/login");
+            } else {
+                passport.authenticate("local")(req, res, () => {
+                    res.redirect("/");
+                });
+            }
+        });
+    }
+    catch (error) {
+        console.log(error);
+        res.redirect("/login");
+    }
 });
+async function saveUser(username, password, isInstructor) {
+    new Promise((resolve, reject) => {
+        User.register({ username: username, isInstructor: isInstructor }, password, (err, user) => {
+            if (err) {
+                console.log(err);
+                reject("Error registering user");
+            }
+            else {
+                resolve(user);
+            }
+        });
+    });
+}
+
+
 
 //Eric - I'm guessing you'll need async here to use await while you get the assignment data so that's why I left it there- feel free to 
 //get rid of it if you aren't going to need it -MK
