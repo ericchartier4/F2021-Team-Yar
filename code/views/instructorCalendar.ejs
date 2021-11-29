@@ -223,10 +223,13 @@
           </form>
         </td>
         <td>
+          <% if (currentCourse === [])
+          {%>
           <form action="/addassignment" method="post">
             <input type="submit" value="Add Assignment"class="btn btn-primary"> 
             <input type="hidden" name ="courseId" value= "<%=currentCourse%>">
            </form>
+           <% } %>
 
           
         </td>

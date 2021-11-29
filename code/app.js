@@ -505,7 +505,7 @@ app.get ("/instructorCalendar", async(req,res)=>{
      assignmentInfoList = await getAssignmentInfoForPrint(assignmentList,singleCourseArray);
      }
      courseList  =  await getCourseList(req.user._id)
-     
+     console.log(req.session.instructorCourseIdPointer);
    
     
     
