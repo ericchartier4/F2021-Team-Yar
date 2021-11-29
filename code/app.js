@@ -566,7 +566,7 @@ app.get( "/logout", ( req, res ) => {
 app.post( "/addassignment", ( req, res ) => {
     //check if user is authenticated before rendering - will need to do this later on once login/signup is done
     console.log("user accessed the add assignment page");
-    res.render("addassignment", {courseId: "111111111111111111111111"}); //replace hardcoded value with req.body.variable from eric's form
+    res.render("addassignment", {courseId: req.body.courseId}); //replace hardcoded value with req.body.variable from eric's form
 });
 
 app.post("/addassign", async( req, res ) => {
@@ -635,6 +635,7 @@ app.post( "/edassign", async( req, res ) => {
 app.post( "/addcourse", ( req, res ) => {
     //check if user is authenticated before rendering - will need to do this later on once login/signup is done
     console.log("user accessed the add course page");
+    console.log(req.user)
     res.render("addcourse", {instrucId: "111111111111111111111111"}); //replace hardcoded value with req.user.userid - passport
 });
 
@@ -662,11 +663,11 @@ app.post( "/newcourse", async( req, res ) => {
             console.log("unique code")
         }
     }
-
+    instrucId = mongoose.Types.ObjectId(req.body.instrucId);
     const course = new Course({
         courseName: req.body.course,
         sectionName: req.body.section,
-        instructor: req.body.instrucId, 
+        instructor: instrucId, 
         studentList: [],
         assignmentList: [],
         courseCode: newCode
