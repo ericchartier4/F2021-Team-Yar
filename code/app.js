@@ -76,13 +76,13 @@ const assignmentSchema = new mongoose.Schema ({
 });
 
 //users collection
-const User = mongoose.model ( "User", userSchema );
+//const User = mongoose.model ( "User", userSchema );
 
 //course collection
-const Course = mongoose.model ( "Course", courseSchema );
+//const Course = mongoose.model ( "Course", courseSchema );
 
 //assignment collection
-const Assignment = mongoose.model ( "Assignment", assignmentSchema );
+//const Assignment = mongoose.model ( "Assignment", assignmentSchema );
 
 passport.use(User.createStrategy());
 
@@ -431,12 +431,12 @@ async function getAssignmentInfoForPrint(assignmentList, courseList)
 
 
 } 
-app.get( "/calendar", async( req, res ) => {  // wiil have to make these redirect to diffrent sub redirects , should not be too hard. 
+app.get( "/calendar", async( req, res ) => {  
 
     console.log ("user attempting to access calender")
 
     // will assess if student or instructor
-    res.redirect("/studentCalendar")
+    res.redirect("/instructorCalendar")
 });
 
 app.get ("/instructorCalendar", async(req,res)=>{
@@ -468,34 +468,34 @@ app.get ("/instructorCalendar", async(req,res)=>{
         {
             req.session.instructorCourseIdPointer=null;
         }
-         ; // will replace with the first course of instructors course list 
+         ; 
     }
     let dayofWeek =  await new Date( req.session.calendarDatePointer); //returns 0= sunday , 1 = monday...
     dayofWeek = dayofWeek.getDay();
     let sundayOfWeek = new Date (req.session.calendarDatePointer);
     sundayOfWeek.setDate(sundayOfWeek.getDate()-dayofWeek);
     let saturdayOfWeek =  new Date(await getSaturdayOfWeek(sundayOfWeek));
-    let sundayOfNextWeek =  new Date (await  getSundayOfNextWeek(sundayOfWeek));
-     
+    
     let courseList
     let assignmentList ; 
      if( req.session.instructorCourseIdPointer !== null)
      {
-     courseList = new Array( req.session.instructorCourseIdPointer);// using courselist to simplify creation of ejs.  but single course only 
-     assignmentList = await getAssignmentsOfWeek(courseList,sundayOfWeek)
+     let singleCourseArray = new Array( req.session.instructorCourseIdPointer); 
+     assignmentList = await getAssignmentsOfWeek(singleCourseArray,sundayOfWeek)
      assignmentList = await sortAssignmentsByDueDate(assignmentList);
-     assignmentInfoList = await getAssignmentInfoForPrint(assignmentList,courseList);
+     assignmentInfoList = await getAssignmentInfoForPrint(assignmentList,singleCourseArray);
+     courseList  =  await getCourseList("111111111111111111111111")
      }
      else
      {
-        courseList =null; //course list needed for ejs select form 
+        courseList =null; 
         assignmentList = null;
      }
      
    
     
     
-    res.render("calendar", {  assignmentInfoList:assignmentInfoList, sundayOfWeek:new Date(sundayOfWeek),saturdayOfWeek:new Date(saturdayOfWeek),  isLessThan24HourStrings:isLessThan24HourStrings ,currentCourse: req.session.instructorCourseIdPointer, courseList:courseList}); 
+    res.render("instructorCalendar", {  assignmentInfoList:assignmentInfoList, courseList: courseList, sundayOfWeek:new Date(sundayOfWeek),saturdayOfWeek:new Date(saturdayOfWeek),  isLessThan24HourStrings:isLessThan24HourStrings ,currentCourse: req.session.instructorCourseIdPointer, courseList:courseList}); 
 
 
 
@@ -516,7 +516,7 @@ app.get("/studentCalendar", async(req,res)=>{
     let sundayOfWeek =  await new Date ( req.session.calendarDatePointer);
      await sundayOfWeek.setDate(sundayOfWeek.getDate()-dayofWeek);
     let saturdayOfWeek =   new Date( await getSaturdayOfWeek(sundayOfWeek));
-    let sundayOfNextWeek =  new Date (getSundayOfNextWeek(sundayOfWeek));
+   
     let courseList  =  await getCourseList("111111111111111111111111")
     let assignmentList
    
@@ -537,7 +537,7 @@ app.get("/studentCalendar", async(req,res)=>{
     console.log(assignmentInfoList)
 
 
-    res.render("calendar", { assignmentInfoList:assignmentInfoList, sundayOfWeek: new Date (sundayOfWeek), saturdayOfWeek:new Date(saturdayOfWeek) , isLessThan24HourStrings:isLessThan24HourStrings }); 
+    res.render("studentCalendar", { assignmentInfoList:assignmentInfoList, sundayOfWeek: new Date (sundayOfWeek), saturdayOfWeek:new Date(saturdayOfWeek) , isLessThan24HourStrings:isLessThan24HourStrings }); 
 
 })
 
@@ -715,7 +715,7 @@ app.post( "/jncourse", async( req, res ) => {
     res.redirect("/calendar");
 });
 
- app.get( "/nextweek", async( req, res ) => {
+ app.get( "/nextWeek", async( req, res ) => {
     
     let weekIncrament = await new Date( req.session.calendarDatePointer);
     await weekIncrament.setDate(weekIncrament.getDate()+7);
@@ -724,7 +724,7 @@ app.post( "/jncourse", async( req, res ) => {
     
  });
 
- app.get( "/lastweek", async( req, res ) => {
+ app.get( "/lastWeek", async( req, res ) => {
     let weekDecrament = await new Date( req.session.calendarDatePointer);
     await weekDecrament.setDate(weekDecrament.getDate()-7);
     req.session.calendarDatePointer = weekDecrament;
@@ -733,3 +733,9 @@ app.post( "/jncourse", async( req, res ) => {
  });
 
  
+ app.post( "/instructorSelectCourse", ( req, res ) => {
+   console.log(req.body.selecter);
+   req.session.instructorCourseIdPointer=req.body.selecter;
+
+    res.redirect("/calendar");
+}); 
