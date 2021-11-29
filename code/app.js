@@ -485,7 +485,7 @@ app.get ("/instructorCalendar", async(req,res)=>{
         req.session.calendarDatePointer.setSeconds(0);
         req.session.calendarDatePointer.setMilliseconds(0);
       }
-    if (!req.session.instructorCourseIdPointer || req.session.instructorCourseIdPointer === [] )
+    if (!req.session.instructorCourseIdPointer)
     {
         let firstCourse = await User.findOne({_id:req.user._id})
       
@@ -504,6 +504,7 @@ app.get ("/instructorCalendar", async(req,res)=>{
         }
         
     }
+    
     let dayofWeek =  await new Date( req.session.calendarDatePointer); //returns 0= sunday , 1 = monday...
     dayofWeek = dayofWeek.getDay();
     let sundayOfWeek = new Date (req.session.calendarDatePointer);
@@ -521,9 +522,9 @@ app.get ("/instructorCalendar", async(req,res)=>{
      assignmentInfoList = await getAssignmentInfoForPrint(assignmentList,singleCourseArray);
      }
      courseList  =  await getCourseList(req.user._id)
-     console.log(req.session.instructorCourseIdPointer);
+     
    
-    
+    console.log(req.session.instructorCourseIdPointer);
     
     res.render("instructorCalendar", {  assignmentInfoList:assignmentInfoList, courseList: courseList, sundayOfWeek:new Date(sundayOfWeek),saturdayOfWeek:new Date(saturdayOfWeek),  isLessThan24HourStrings:isLessThan24HourStrings ,currentCourse: req.session.instructorCourseIdPointer, courseList:courseList}); 
     } catch ( error ) {
@@ -739,7 +740,9 @@ app.post( "/newcourse", async( req, res ) => {
         assignmentList: [],
         courseCode: newCode
     });
+    
     courseId = course._id;
+    req.session.instructorCourseIdPointer = courseId;
     course.save();
     await User.updateOne({_id: instrucId}, 
         {
