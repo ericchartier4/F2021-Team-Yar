@@ -72,11 +72,16 @@ app.post("/signup", async (req, res) => {
     try {
         let username = req.body.username;
         let password = req.body.password;
+        let authentication = req.body.authentication;
+       
         console.log(req.body)
         if(req.body.type == "instructor"){
+            if (req.body.authentication != "grades") {
+                return res.redirect("/");
+               }
             console.log("isInstructor")
             isInstructor = true; //added this
-            //check if auth code is correct, if not then don't do the User.register below
+            //check if auth code is correct, if not then don't do the User.register below                             
         }else{
             console.log("isStudent")
             isInstructor = false; //added this
@@ -124,7 +129,16 @@ app.post("/login", (req, res) => {
         const user = new User({
             username: req.body.username,
             password: req.body.password,
+            authentication: req.body.authentication,
         });
+        if(req.body.type == "instructor"){
+            if (req.body.authentication != "grades") {
+                return res.redirect("/");
+               }
+            console.log("isInstructor")
+            isInstructor = true; //added this
+            //check if auth code is correct, if not then don't do the User.register below                             
+        }
         console.log(req.body)
         req.login(user, (err) => {
             if (err) {
@@ -137,6 +151,8 @@ app.post("/login", (req, res) => {
                             res.redirect( "/calendar" ); 
                         });          
             }
+        
+        
         });
     }
     catch (error) {
