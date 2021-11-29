@@ -117,16 +117,37 @@ app.post("/signup", async (req, res) => {
     try {
         let username = req.body.username;
         let password = req.body.password;
-        await saveUser(username, password, req.body.type == "instructor" ? true : false);
-        passport.authenticate("local")(req, res, () => {
-            res.redirect("/");
-        });
+        console.log(req.body)
+        if(req.body.type == "instructor"){
+            console.log("isInstructor")
+            isInstructor = true; //added this
+            //check if auth code is correct, if not then don't do the User.register below
+        }else{
+            console.log("isStudent")
+            isInstructor = false; //added this
+        }
+            User.register({ username : username, isInstructor : isInstructor }, 
+                req.body.password, 
+                ( err, user ) => {
+                if ( err ) {
+                console.log( err );
+                    res.redirect( "/" );
+                } else {
+                    passport.authenticate( 'local', { successRedirect:'/calendar',
+                    failureRedirect: '/' })( req, res, () => { 
+                        res.redirect( "/calendar" ); 
+                    });  
+                }
+            });
     }
     catch (error) {
+        // console.log("Cannot find user")
+        console.log(req.body)
         console.error(error);
-        res.redirect("/login");
+        // res.redirect("/login");
     }
 });
+
 app.get("/login", (req, res) => {
     try {
         if (req.isAuthenticated()) {
@@ -141,20 +162,25 @@ app.get("/login", (req, res) => {
     }
 });
 
+
+
 app.post("/login", (req, res) => {
     try {
         const user = new User({
             username: req.body.username,
-            password: req.body.password
+            password: req.body.password,
         });
+        console.log(req.body)
         req.login(user, (err) => {
             if (err) {
                 console.log(err);
-                res.redirect("/login");
+                res.redirect("/");
             } else {
-                passport.authenticate("local")(req, res, () => {
-                    res.redirect("/");
-                });
+                
+                        passport.authenticate( 'local', { successRedirect:'/calendar',
+                        failureRedirect: '/' })( req, res, () => { 
+                            res.redirect( "/calendar" ); 
+                        });          
             }
         });
     }
@@ -163,12 +189,12 @@ app.post("/login", (req, res) => {
         res.redirect("/login");
     }
 });
-async function saveUser(username, password, isInstructor) {
+function saveUser(username, password, isInstructor) {
     new Promise((resolve, reject) => {
         User.register({ username: username, isInstructor: isInstructor }, password, (err, user) => {
             if (err) {
                 console.log(err);
-                reject("Error registering user");
+                reject("can not save the user in db");
             }
             else {
                 resolve(user);
@@ -176,6 +202,9 @@ async function saveUser(username, password, isInstructor) {
         });
     });
 }
+
+
+
 
 
 
