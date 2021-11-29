@@ -455,20 +455,13 @@ app.get ("/instructorCalendar", async(req,res)=>{
         if (firstCourse !== null )
         { 
         firstcourse = firstCourse[0] 
-        if ( firstCourse !== null)
-        {
-          req.session.instructorCourseIdPointer = firstCourse[0];
+        req.session.instructorCourseIdPointer = firstCourse.valueOf();
         }
         else 
         {
         req.session.instructorCourseIdPointer=null;
         }
-        }
-        else 
-        {
-            req.session.instructorCourseIdPointer=null;
-        }
-         ; 
+        
     }
     let dayofWeek =  await new Date( req.session.calendarDatePointer); //returns 0= sunday , 1 = monday...
     dayofWeek = dayofWeek.getDay();
