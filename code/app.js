@@ -13,6 +13,7 @@ const passport = require("passport");
 const User = require("./models/user").User;
 const Assignment = require("./models/assignment");
 const Course = require("./models/course");
+const { captureRejections } = require("events");
 require("dotenv").config();
 
 const app = express();
@@ -513,20 +514,25 @@ app.get ("/instructorCalendar", async(req,res)=>{
  
     let courseList = new Array();
     let assignmentList = new Array(); 
-    let assignmentInfoList = new Array(); 
-     if (req.session.instructorCourseIdPointer.length !== 0 )
+    let assignmentInfoList = new Array();  
+    let currentCourse;
+     courseList  =  await getCourseList(req.user._id)
+     if (courseList.length !== 0)
      {
      let singleCourseArray = new Array( req.session.instructorCourseIdPointer); 
      assignmentList = await getAssignmentsOfWeek(singleCourseArray,sundayOfWeek)
      assignmentList = await sortAssignmentsByDueDate(assignmentList);
      assignmentInfoList = await getAssignmentInfoForPrint(assignmentList,singleCourseArray);
+     currentCourse = req.session.instructorCourseIdPointer;
      }
-     courseList  =  await getCourseList(req.user._id)
+     else 
+     {
+         currentCourse = null
+     }
      
-   
     console.log(req.session.instructorCourseIdPointer);
     
-    res.render("instructorCalendar", {  assignmentInfoList:assignmentInfoList, courseList: courseList, sundayOfWeek:new Date(sundayOfWeek),saturdayOfWeek:new Date(saturdayOfWeek),  isLessThan24HourStrings:isLessThan24HourStrings ,currentCourse: req.session.instructorCourseIdPointer, courseList:courseList}); 
+    res.render("instructorCalendar", {  assignmentInfoList:assignmentInfoList, courseList: courseList, sundayOfWeek:new Date(sundayOfWeek),saturdayOfWeek:new Date(saturdayOfWeek),  isLessThan24HourStrings:isLessThan24HourStrings ,currentCourse: currentCourse, courseList:courseList}); 
     } catch ( error ) {
         console.log( error );
     }
