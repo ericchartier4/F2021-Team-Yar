@@ -599,22 +599,6 @@ app.get("/studentCalendar", async(req,res)=>{
 
 
 //Logout
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //in theory this one should already work - MK
 app.get( "/logout", ( req, res ) => {
     console.log( "A user is logging out" );
@@ -720,16 +704,6 @@ app.post( "/newcourse", async( req, res ) => {
         }
     }
 
-    // const assignment = new Assignment({
-    //     assignmentName: req.body.assignName,
-    //     dueDate: fixedDate,
-    //     dueTime: req.body.dueTime,
-    // });
-    // assignID = assignment._id;
-    // console.log(assignID);
-    // assignment.save();
-
-
     instrucId = mongoose.Types.ObjectId(req.user._id);
     console.log(instrucId)
     const course = new Course({
@@ -753,10 +727,11 @@ app.post( "/newcourse", async( req, res ) => {
 
 app.post( "/joincourse", ( req, res ) => {
     console.log("user accessed the join course page");
-    res.render("joincourse", {studId: req.user._id}); //replace hardcoded value with req.user.userid - passport
+    res.render("joincourse", {studId: req.user._id}); 
 });
 
 app.post( "/jncourse", async( req, res ) => {
+    console.log(req.user)
     let foundCourse = false;
     const results = await Course.find();
     for(i = 0; i < results.length; i++){
@@ -772,7 +747,7 @@ app.post( "/jncourse", async( req, res ) => {
         }
     }
     if(foundCourse){
-        studId = mongoose.Types.ObjectId(req.user.studId);
+        studId = mongoose.Types.ObjectId(req.user._id);
         await Course.updateOne({_id: courseId}, 
             { 
                 $push: {studentList: studId},
@@ -780,7 +755,7 @@ app.post( "/jncourse", async( req, res ) => {
 
         await User.updateOne({_id: studId}, 
             { 
-                $push: {listOfCourses: courseId},  
+                $push: {listOfCourses : courseId},  
             });
     }
 
