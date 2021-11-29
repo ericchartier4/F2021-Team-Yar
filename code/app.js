@@ -275,12 +275,16 @@ return Courses;
  async function getAssignmentsOfWeek(courseListArray, sundayOfWeek)
 {
     let userAssignments = []; 
-   
+    console.log(courseListArray);
     let sundayOfNextWeek = new Date(await getSundayOfNextWeek(sundayOfWeek));
+    if(courseListArray.length !== 0)
+    {
     for (let i of courseListArray)
     {      
         
         let viewAssignmentList = await Course.findOne({_id: i });
+        if (viewAssignmentList.length !== 0 )
+        {
         viewAssignmentList= viewAssignmentList["assignmentList"];
         for (let j of viewAssignmentList)
         {
@@ -295,6 +299,8 @@ return Courses;
             }
         }
     }
+    }
+}
     return userAssignments
 }
 
@@ -463,19 +469,22 @@ app.get ("/instructorCalendar", async(req,res)=>{
         req.session.calendarDatePointer.setSeconds(0);
         req.session.calendarDatePointer.setMilliseconds(0);
       }
-    if (!req.session.instructorCourseIdPointer )
+    if (!req.session.instructorCourseIdPointer || req.session.instructorCourseIdPointer === [] )
     {
         let firstCourse = await User.findOne({_id:req.user._id})
-        firstCourse = firstCourse["listOfCourses"]
-       
-        if (firstCourse !== null )
-        { 
+      
+      firstCourse = firstCourse["listOfCourses"]
+        if (firstCourse.length !== 0  )
+        {  
+            
+        
         firstCourse = firstCourse[0] 
         req.session.instructorCourseIdPointer = firstCourse.valueOf();
         }
         else 
         {
-        req.session.instructorCourseIdPointer=null;
+        
+        req.session.instructorCourseIdPointer =[];
         }
         
     }
@@ -484,22 +493,18 @@ app.get ("/instructorCalendar", async(req,res)=>{
     let sundayOfWeek = new Date (req.session.calendarDatePointer);
     sundayOfWeek.setDate(sundayOfWeek.getDate()-dayofWeek);
     let saturdayOfWeek =  new Date(await getSaturdayOfWeek(sundayOfWeek));
-    
-    let courseList
-    let assignmentList ; 
-     if( req.session.instructorCourseIdPointer !== null)
+ 
+    let courseList = new Array();
+    let assignmentList = new Array(); 
+    let assignmentInfoList = new Array(); 
+     if (req.session.instructorCourseIdPointer.length !== 0 )
      {
      let singleCourseArray = new Array( req.session.instructorCourseIdPointer); 
      assignmentList = await getAssignmentsOfWeek(singleCourseArray,sundayOfWeek)
      assignmentList = await sortAssignmentsByDueDate(assignmentList);
      assignmentInfoList = await getAssignmentInfoForPrint(assignmentList,singleCourseArray);
+     }
      courseList  =  await getCourseList(req.user._id)
-     }
-     else
-     {
-        courseList =null; 
-        assignmentList = null;
-     }
      
    
     
@@ -550,9 +555,9 @@ app.get("/studentCalendar", async(req,res)=>{
     let saturdayOfWeek =   new Date( await getSaturdayOfWeek(sundayOfWeek));
    
     let courseList  =  await getCourseList(req.user._id)
-    let assignmentList
-   
-    if (courseList !== null)
+    let assignmentList = [];
+    let assignmentInfoList = [];
+    if (courseList.length !== 0) 
     {
         
         assignmentList =  await getAssignmentsOfWeek(courseList, sundayOfWeek)
@@ -560,10 +565,7 @@ app.get("/studentCalendar", async(req,res)=>{
         assignmentInfoList = await getAssignmentInfoForPrint(assignmentList,courseList);
       
     }                                                        
-    else 
-    {
-        assignmentList = null;
-    }
+   
     res.render("studentCalendar", { assignmentInfoList:assignmentInfoList, sundayOfWeek: new Date (sundayOfWeek), saturdayOfWeek:new Date(saturdayOfWeek) , isLessThan24HourStrings:isLessThan24HourStrings }); 
               
           } catch ( error ) {
