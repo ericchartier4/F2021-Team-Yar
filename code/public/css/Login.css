@@ -56,7 +56,7 @@ input {
   z-index: 5;
 }
 
-form {
+form, .student-container,.instructor-container {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -68,12 +68,12 @@ form {
   grid-row: 1 / 2;
 }
 
-form.student-container {
+div.student-container {
   opacity: 0;
   z-index: 1;
 }
 
-form.instructor-container {
+div.instructor-container {
   z-index: 2;
 }
 
@@ -192,12 +192,12 @@ form.instructor-container {
   left: 25%;
 }
 
-.container.show-student-forms-mode form.student-container {
+.container.show-student-forms-mode div.student-container {
   opacity: 1;
   z-index: 2;
 }
 
-.container.show-student-forms-mode form.instructor-container {
+.container.show-student-forms-mode div.instructor-container {
   opacity: 0;
   z-index: 1;
 }

@@ -6,26 +6,23 @@ var functions = fs.readFileSync('functions.js');
 const script = new vm.Script(functions);
 script.runInThisContext();
 
-const express  = require( "express" );
-const mongoose = require( "mongoose" );
-
-const session = require("express-session")
-const passport = require("passport")
-const passportLocalMongoose = require("passport-local-mongoose");
+const express = require("express");
+const mongoose = require("mongoose");
+const session = require("express-session");
+const passport = require("passport");
 const User = require("./models/user").User;
 const Assignment = require("./models/assignment");
 const Course = require("./models/course");
-const { log } = require("console");
 require("dotenv").config();
 
-const app = express(); 
+const app = express();
 app.use(express.static("public"));
 // a common localhost test port
-const port = 3000; 
+const port = 3000;
 
 // body-parser is now built into express!
 app.use(express.json());
-app.use( express.urlencoded( { extended: true} ) ); 
+app.use(express.urlencoded({ extended: true }));
 
 app.use(session({
     secret: process.env.SECRET,
@@ -33,61 +30,19 @@ app.use(session({
     saveUninitialized: false
 }));
 
-app.use (passport.initialize());
-app.use (passport.session());
 
-app.set( "view engine", "ejs" );
-app.set("views","./views");
 
+app.set("view engine", "ejs");
+app.set("views", "./views");
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(User.createStrategy());
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
+
 
 // connect to mongoose on port 27017
-mongoose.connect( 'mongodb://localhost:27017/taskmaster', 
-                 { useNewUrlParser: true, useUnifiedTopology: true });
-
-//create user schema
-const userSchema = new mongoose.Schema ({
-    username: String,
-    password: String,
-    listOfCourses: Array,
-    isInstructor: Boolean
-});
-// plugins extend Schema functionality
-userSchema.plugin(passportLocalMongoose);
-
-
-//create course schema
-const courseSchema = new mongoose.Schema ({
-    courseName: String,
-    sectionName: String,
-    instructor: {type: mongoose.Schema.Types.ObjectId, ref: 'User'}, //number is instructor id - we never made any functionality for multiple instructors, 
-                        //so it will remain as one and not an array - MK
-    studentList: Array, //array of ids
-    assignmentList: Array, //array of ids
-    courseCode: String
-});
-
-//create assignment schema
-const assignmentSchema = new mongoose.Schema ({
-    assignmentName: String,
-    dueDate: String, //I used the format yyyy-mm-dd -MK
-    dueTime: String //24h format: 2:00 pm is 14:00 -MK
-});
-
-//users collection
-//const User = mongoose.model ( "User", userSchema );
-
-//course collection
-//const Course = mongoose.model ( "Course", courseSchema );
-
-//assignment collection
-//const Assignment = mongoose.model ( "Assignment", assignmentSchema );
-
-passport.use(User.createStrategy());
-
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
+mongoose.connect('mongodb://localhost:27017/taskmaster', { useNewUrlParser: true, useUnifiedTopology: true });
 
 
 // Simple server operation
