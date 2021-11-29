@@ -54,13 +54,13 @@
                                             <div class="mb-3">
                                                 <label for="password" class="form-label">Password</label>
                                                 <input type="password" class="form-control" id="password_instructor_login" name="password"
-                                                    placeholder=""/>
+                                                    placeholder="Password"/>
                                             </div>
                                             <div class="mb-3">
                                                 <label for="authentication"
                                                     class="form-label">Authentication</label>
                                                 <input type="text" class="form-control" id="authentication_instructor_login" name="authentication"
-                                                    placeholder="Authentication"/>
+                                                    placeholder="Enter Instructor Authentication Code Given" required/>
                                             </div>
                                             <input type="submit" class="btn btn-primary" value="Log in"/>
                                         </form>
@@ -92,21 +92,23 @@
                                                 <label for="exampleInputPassword3" class="form-label">Password</label>
                                                 <input type="password" class="form-control password-input"
                                                     id="password_instructor_signup" name="password"
-                                                    placeholder="">
+                                                    placeholder="Password">
                                             </div>
                                             <div class="mb-3">
                                                 <label for="exampleInputPassword4" class="form-label">Confirm
                                                     Password</label>
                                                 <input type="password" class="form-control password-input"
                                                     id="consfirm_password_instructor_signup" name="confirm_password"
-                                                    placeholder="">
+                                                    placeholder="Confirm password">
                                             </div>
+                                            
                                             <div class="mb-3">
                                                 <label for="exampleInputPassword5"
                                                     class="form-label">Authentication</label>
                                                 <input type="text" class="form-control" id="authentication_instructor_signup" name="authentication"
-                                                    placeholder="Authentication">
+                                                    placeholder="Enter Instructor Authentication Code Given" required>
                                             </div>
+                                        
                                             <button type="submit" class="btn btn-primary">Sign up</button>
                                         </form>
                                     </div>
@@ -149,7 +151,7 @@
                                             <div class="mb-3">
                                                 <label for="exampleInputPassword1" class="form-label">Password</label>
                                                 <input type="password" class="form-control" id="password" name="password"
-                                                    placeholder="">
+                                                    placeholder="Password">
                                             </div>
                                             <button type="submit" class="btn btn-primary">Log in</button>
                                         </form>
@@ -181,14 +183,14 @@
                                                 <label for="exampleInputPassword2" class="form-label">Password</label>
                                                 <input type="password" class="form-control password-input"
                                                     id="password" name="password"
-                                                    placeholder="">
+                                                    placeholder="Password">
                                             </div>
                                             <div class="mb-3">
                                                 <label for="exampleInputPassword3" class="form-label">Confirm
                                                     Password</label>
                                                 <input type="password" class="form-control password-input"
                                                 id="consfirm_password" name="confirm_password"
-                                                    placeholder="">
+                                                    placeholder="Confirm Password">
                                             </div>
                                             <button type="submit" class="btn btn-primary">Sign up</button>
                                         </form>
@@ -235,11 +237,9 @@
         const sign_in_btn = document.querySelector("#goto-instructor-container-btn");
         const sign_up_btn = document.querySelector("#goto-student-container-btn");
         const container = document.querySelector(".container");
-
         sign_up_btn.addEventListener("click", () => {
             container.classList.add("show-student-forms-mode");
         });
-
         sign_in_btn.addEventListener("click", () => {
             container.classList.remove("show-student-forms-mode");
         });
