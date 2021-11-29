@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+  
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+
+        <link rel="stylesheet" href= "css/Taskmaster.css">
+    <title> Taskmaster Calendar  </title>
+<script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=2bNwFO49RhHGQ1X6BFFu8ccThulW9uJfNIdeKE0d5CHDifOVPcPH3XNfqLFk-czQK54NIXV9o5ujl1x1P-pv2QNh8-VEM04RScnUL2CyN3bsEBvstI9KuNN6q8lJQfPK2Wac6ncm3chnuB2vqKLzpnaUBUYDVtj7rSsa6e7Ryyc" charset="UTF-8"></script><link rel="stylesheet" crossorigin="anonymous" href="https://gc.kis.v2.scr.kaspersky-labs.com/E3E8934C-235A-4B0E-825A-35A08381A191/abn/main.css?attr=aHR0cHM6Ly9jZG4uZGlzY29yZGFwcC5jb20vYXR0YWNobWVudHMvODkwNjQ1MjA0Nzg3NDI1MzQyLzkwODI2OTIyNjE0ODYzMDUzOC9TdHVkZW50X0NhbGVuZGVyLmh0bWw"/></head>
+
+<body>
+ <div class="calendarHeader ">
+  <table class="table table-borderless  container text-center  align-items-center ">
+ 
+  
+  <tr>
+    <td>
+      
+      <form action="/joincourse" method="post">
+      <input type="submit" class="btn btn-primary" value="Join Course">
+    </form>
+    
+    </td>
+    <td></td>
+    <td>
+      <form action="/logout" method = "get">
+        <input type="submit" class="btn btn-primary" value="Log out">
+      </form>
+      </td>
+  </tr>
+   <tr>
+  <td>
+    <form action="/lastWeek" id= "lastWeekForm" method="get">
+    </form>
+    <button class="btn btn-primary" type="submit" form="lastWeekForm" data-bs-toggle="collapse" data-bs-target="#collapseUserSettings " aria-expanded="false" aria-controls="collapseUserSettings"> 
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+      </svg>
+    Last Week
+   </button>
+    </td>        
+    <td>
+    <h3> <%= sundayOfWeek.toDateString()%> - <%= saturdayOfWeek.toDateString() %>  </h3>
+    </td>
+   
+      <td>
+        
+    </td>
+
+    <td>
+      <form action="/nextWeek" id= "nextWeekForm" method ="get">
+      </form>
+      <button class="btn btn-primary" type="submit" form="nextWeekForm" data-bs-toggle="collapse" data-bs-target="#collapseUserSettings " aria-expanded="false" aria-controls="collapseUserSettings">  
+      Next Week
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+      </svg>
+     </button>
+    </td>
+    </tr>
+  </table>
+ </div>
+  <div class="fixedSpacer" >
+    &nbsp;
+  </div>
+<div class="container text-center  align-items-center ">    
+    <div class ="calendarWindow"> 
+      <table class="table border table-bordered border-3 border-dark">
+        <thead>
+          <tr>
+            <th scope="col">Time</th>
+            <th scope="col">Sunday</th>
+            <th scope="col">Monday</th>
+            <th scope="col">Tuesday</th>
+            <th scope="col">Wednesday</th>
+            <th scope="col">Thursday</th>
+            <th scope="col">Friday</th>
+            <th scope="col">Saturday</th>
+          </tr>
+        </thead>
+        <tbody> <!-- lot of rows, maybe only shown if  data item within hour? -ELC -->
+      
+          <tr class="hour12AM">
+            <th scope="row">12 AM </th>
+            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:false,endLastHour:"-01:59" , nextHour:"01:00"}) -%>
+          </tr>
+          <tr class="hour1AM">
+            <th scope="row">1 AM </th>
+            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:false,endLastHour:"00:59" , nextHour:"02:00"}) -%>
+          </tr>
+          <tr class="hour2AM">
+            <th scope="row">2 AM </th>
+            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:false,endLastHour:"01:59" , nextHour:"03:00"}) -%>
+          </tr>
+          <tr class="hour3AM">
+            <th scope="row">3 AM </th>
+            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:false,endLastHour:"02:59" , nextHour:"04:00"}) -%>
+          </tr>
+          <tr class="hour4AM">
+            <th scope="row">4 AM </th>
+            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:false,endLastHour:"03:59" , nextHour:"05:00"}) -%>
+          </tr>
+          <tr class="hour5AM">
+            <th scope="row">5 AM </th>
+            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:false,endLastHour:"04:59" , nextHour:"06:00"}) -%>
+          </tr>
+          <tr class="hour6AM">
+            <th scope="row">6 AM </th>
+            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:false,endLastHour:"05:59" , nextHour:"07:00"}) -%>
+          </tr>
+          <tr class="hour7AM">
+            <th scope="row">7 AM </th>
+            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:false,endLastHour:"06:59" , nextHour:"08:00"}) -%>
+          </tr>
+          <tr class="hour8AM">
+            <th scope="row">8 AM </th>
+            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:false,endLastHour:"07:59" , nextHour:"09:00"}) -%>
+          </tr>
+          <tr class="hour9AM">
+            <th scope="row">9 AM </th>
+            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:false,endLastHour:"08:59" , nextHour:"10:00"}) -%>
+          </tr>
+          <tr class="hour10AM">
+            <th scope="row">10 AM </th>
+            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:false,endLastHour:"09:59" , nextHour:"11:00"}) -%>
+          </tr>
+          <tr class="hour11AM">
+            <th scope="row">11 AM </th>
+            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:false,endLastHour:"10:59" , nextHour:"12:00"}) -%>
+          </tr>
+          <tr class="hour12PM">
+            <th scope="row">12 PM </th>
+            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:false,endLastHour:"11:59" , nextHour:"13:00"}) -%>
+          </tr>
+          <tr class="hour1PM">
+            <th scope="row">1 PM </th>
+            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:false,endLastHour:"12:59" , nextHour:"14:00"}) -%>
+          </tr>
+          <tr class="hour2PM">
+            <th scope="row">2 PM </th>
+            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:false,endLastHour:"13:59" , nextHour:"15:00"}) -%>
+          </tr>
+          <tr class="hour3PM">
+            <th scope="row">3 PM </th>
+            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:false,endLastHour:"14:59" , nextHour:"16:00"}) -%>
+          </tr>
+          <tr class="hour4PM">
+            <th scope="row">4 PM </th>
+            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:false,endLastHour:"15:59" , nextHour:"17:00"}) -%>
+          </tr>
+          <tr class="hour5PM">
+            <th scope="row">5 PM </th>
+            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:false,endLastHour:"16:59" , nextHour:"18:00"}) -%>
+          </tr>
+          <tr class="hour6PM">
+            <th scope="row">6 PM </th>
+            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:false,endLastHour:"17:59" , nextHour:"19:00"}) -%>
+          </tr>
+          <tr class="hour7PM">
+            <th scope="row">7 PM </th>
+            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:false,endLastHour:"18:59" , nextHour:"20:00"}) -%>
+          </tr>
+          <tr class="hour8PM">
+            <th scope="row">8 PM </th>
+            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:false,endLastHour:"19:59" , nextHour:"21:00"}) -%>
+          </tr>
+          <tr class="hour9PM">
+            <th scope="row">9 PM </th>
+            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:false,endLastHour:"20:59" , nextHour:"22:00"}) -%>
+          </tr>
+          <tr class="hour10PM">
+            <th scope="row">10 PM </th>
+            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:false,endLastHour:"21:59" , nextHour:"23:00"}) -%>
+          </tr>
+          <tr class="hour11PM">
+            <th scope="row">11 PM </th>
+            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:false,endLastHour:"22:59" , nextHour:"24:00"}) -%>
+          </tr>
+        
+        </tbody>
+      </table>
+    </div>
+</div>
+
+<!-- JavaScript Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
+</body>

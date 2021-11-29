@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-  <% let isInstructor = true; %>
+ 
 
 <head>
   <meta charset="UTF-8">
@@ -18,14 +18,8 @@
  
   
   <tr>
-    <td>
-      <% if( isInstructor !== true)
-      { %>
-      <form action="/joincourse" method="post">
-      <input type="submit" class="btn btn-primary" value="Join Course">
-    </form>
-    <%}%>
-    </td>
+    <td></td>
+    <td></td>
     <td></td>
     <td>
       <form action="/logout" method = "get">
@@ -35,7 +29,7 @@
   </tr>
    <tr>
   <td>
-    <form action="/lastweek" id= "lastWeekForm">
+    <form action="/lastWeek" id= "lastWeekForm" method="get">
     </form>
     <button class="btn btn-primary" type="submit" form="lastWeekForm" data-bs-toggle="collapse" data-bs-target="#collapseUserSettings " aria-expanded="false" aria-controls="collapseUserSettings"> 
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
@@ -47,16 +41,30 @@
     <td>
     <h3> <%= sundayOfWeek.toDateString()%> - <%= saturdayOfWeek.toDateString() %>  </h3>
     </td>
-    <% if ( isInstructor === true)
-    { %>
+    
       <td>
-        <select class="form-select" aria-label="Default select example">
-            <option value="ENSE374-001" selected>ENSE374-001</option>
-          </select>   
+        
+
+        <form action="/instructorSelectCourse" method="post" id = "instructorSelectForm"> 
+        <select class="form-select" name ="selecter" onChange="this.form.submit()" >
+        <% for ( let i of courseList)
+         { %>
+          
+            
+            <option value="<%=i['_id'] %>" 
+              <% if ( i['_id'] == currentCourse) 
+              {  %>
+                selected
+             <%} %>
+              > <%= i['courseName'] %>-<%= i['sectionName'] %> </option>
+            
+        <% } %> 
+          </select> 
+        </form>
     </td>
-    <%} %> 
+
     <td>
-      <form action="/nextweek" id= "nextWeekForm" method ="get">
+      <form action="/nextWeek" id= "nextWeekForm" method ="get">
       </form>
       <button class="btn btn-primary" type="submit" form="nextWeekForm" data-bs-toggle="collapse" data-bs-target="#collapseUserSettings " aria-expanded="false" aria-controls="collapseUserSettings">  
       Next Week
@@ -90,107 +98,106 @@
       
           <tr class="hour12AM">
             <th scope="row">12 AM </th>
-            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:isInstructor,endLastHour:"-01:59" , nextHour:"01:00"}) -%>
+            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:true,endLastHour:"-01:59" , nextHour:"01:00"}) -%>
           </tr>
           <tr class="hour1AM">
             <th scope="row">1 AM </th>
-            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:isInstructor,endLastHour:"00:59" , nextHour:"02:00"}) -%>
+            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:true,endLastHour:"00:59" , nextHour:"02:00"}) -%>
           </tr>
           <tr class="hour2AM">
             <th scope="row">2 AM </th>
-            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:isInstructor,endLastHour:"01:59" , nextHour:"03:00"}) -%>
+            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:true,endLastHour:"01:59" , nextHour:"03:00"}) -%>
           </tr>
           <tr class="hour3AM">
             <th scope="row">3 AM </th>
-            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:isInstructor,endLastHour:"02:59" , nextHour:"04:00"}) -%>
+            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:true,endLastHour:"02:59" , nextHour:"04:00"}) -%>
           </tr>
           <tr class="hour4AM">
             <th scope="row">4 AM </th>
-            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:isInstructor,endLastHour:"03:59" , nextHour:"05:00"}) -%>
+            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:true,endLastHour:"03:59" , nextHour:"05:00"}) -%>
           </tr>
           <tr class="hour5AM">
             <th scope="row">5 AM </th>
-            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:isInstructor,endLastHour:"04:59" , nextHour:"06:00"}) -%>
+            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:true,endLastHour:"04:59" , nextHour:"06:00"}) -%>
           </tr>
           <tr class="hour6AM">
             <th scope="row">6 AM </th>
-            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:isInstructor,endLastHour:"05:59" , nextHour:"07:00"}) -%>
+            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:true,endLastHour:"05:59" , nextHour:"07:00"}) -%>
           </tr>
           <tr class="hour7AM">
             <th scope="row">7 AM </th>
-            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:isInstructor,endLastHour:"06:59" , nextHour:"08:00"}) -%>
+            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:true,endLastHour:"06:59" , nextHour:"08:00"}) -%>
           </tr>
           <tr class="hour8AM">
             <th scope="row">8 AM </th>
-            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:isInstructor,endLastHour:"07:59" , nextHour:"09:00"}) -%>
+            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:true,endLastHour:"07:59" , nextHour:"09:00"}) -%>
           </tr>
           <tr class="hour9AM">
             <th scope="row">9 AM </th>
-            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:isInstructor,endLastHour:"08:59" , nextHour:"10:00"}) -%>
+            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:true,endLastHour:"08:59" , nextHour:"10:00"}) -%>
           </tr>
           <tr class="hour10AM">
             <th scope="row">10 AM </th>
-            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:isInstructor,endLastHour:"09:59" , nextHour:"11:00"}) -%>
+            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:true,endLastHour:"09:59" , nextHour:"11:00"}) -%>
           </tr>
           <tr class="hour11AM">
             <th scope="row">11 AM </th>
-            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:isInstructor,endLastHour:"10:59" , nextHour:"12:00"}) -%>
+            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:true,endLastHour:"10:59" , nextHour:"12:00"}) -%>
           </tr>
           <tr class="hour12PM">
             <th scope="row">12 PM </th>
-            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:isInstructor,endLastHour:"11:59" , nextHour:"13:00"}) -%>
+            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:true,endLastHour:"11:59" , nextHour:"13:00"}) -%>
           </tr>
           <tr class="hour1PM">
             <th scope="row">1 PM </th>
-            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:isInstructor,endLastHour:"12:59" , nextHour:"14:00"}) -%>
+            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:true,endLastHour:"12:59" , nextHour:"14:00"}) -%>
           </tr>
           <tr class="hour2PM">
             <th scope="row">2 PM </th>
-            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:isInstructor,endLastHour:"13:59" , nextHour:"15:00"}) -%>
+            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:true,endLastHour:"13:59" , nextHour:"15:00"}) -%>
           </tr>
           <tr class="hour3PM">
             <th scope="row">3 PM </th>
-            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:isInstructor,endLastHour:"14:59" , nextHour:"16:00"}) -%>
+            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:true,endLastHour:"14:59" , nextHour:"16:00"}) -%>
           </tr>
           <tr class="hour4PM">
             <th scope="row">4 PM </th>
-            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:isInstructor,endLastHour:"15:59" , nextHour:"17:00"}) -%>
+            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:true,endLastHour:"15:59" , nextHour:"17:00"}) -%>
           </tr>
           <tr class="hour5PM">
             <th scope="row">5 PM </th>
-            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:isInstructor,endLastHour:"16:59" , nextHour:"18:00"}) -%>
+            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:true,endLastHour:"16:59" , nextHour:"18:00"}) -%>
           </tr>
           <tr class="hour6PM">
             <th scope="row">6 PM </th>
-            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:isInstructor,endLastHour:"17:59" , nextHour:"19:00"}) -%>
+            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:true,endLastHour:"17:59" , nextHour:"19:00"}) -%>
           </tr>
           <tr class="hour7PM">
             <th scope="row">7 PM </th>
-            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:isInstructor,endLastHour:"18:59" , nextHour:"20:00"}) -%>
+            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:true,endLastHour:"18:59" , nextHour:"20:00"}) -%>
           </tr>
           <tr class="hour8PM">
             <th scope="row">8 PM </th>
-            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:isInstructor,endLastHour:"19:59" , nextHour:"21:00"}) -%>
+            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:true,endLastHour:"19:59" , nextHour:"21:00"}) -%>
           </tr>
           <tr class="hour9PM">
             <th scope="row">9 PM </th>
-            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:isInstructor,endLastHour:"20:59" , nextHour:"22:00"}) -%>
+            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:true,endLastHour:"20:59" , nextHour:"22:00"}) -%>
           </tr>
           <tr class="hour10PM">
             <th scope="row">10 PM </th>
-            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:isInstructor,endLastHour:"21:59" , nextHour:"23:00"}) -%>
+            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:true,endLastHour:"21:59" , nextHour:"23:00"}) -%>
           </tr>
           <tr class="hour11PM">
             <th scope="row">11 PM </th>
-            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:isInstructor,endLastHour:"22:59" , nextHour:"24:00"}) -%>
+            <%- include("partials/calendar-module.ejs", {assignmentInfoList:assignmentInfoList,isInstructor:true,endLastHour:"22:59" , nextHour:"24:00"}) -%>
           </tr>
         
         </tbody>
       </table>
     </div>
 </div>
-<% if (isInstructor === true)
-{ %>
+
 <div class="calendarFooter ">
   <table class="table table-borderless container text-center  align-items-center ">
       <tr>
@@ -201,7 +208,14 @@
        <tr>
       <td></td>        
         <td>
-        <h3> Course Code: XYAK2314 </h3> 
+          <% for ( let i of courseList) 
+          {
+             if (currentCourse == i['_id'])
+             { %>
+             <h3> Course Code: <%= i['courseCode'] %> </h3> 
+             <% }
+          } %>
+        
         </td>
         <td>
           <form action="/addcourse" method="post">
@@ -211,6 +225,7 @@
         <td>
           <form action="/addassignment" method="post">
             <input type="submit" value="Add Assignment"class="btn btn-primary"> 
+            <input type="hidden" name ="courseId" value= "<%=currentCourse%>">
            </form>
 
           
@@ -218,7 +233,7 @@
         </tr>
       </table>
 </div>
-<% } %>
+
 <!-- JavaScript Bundle with Popper -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
 </body>
