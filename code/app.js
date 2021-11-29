@@ -518,21 +518,7 @@ app.get("/studentCalendar", async(req,res)=>{
 
 })
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//in theory this one should already work - MK
+//Logout
 app.get( "/logout", ( req, res ) => {
     console.log( "A user is logging out" );
     req.logout();
@@ -541,9 +527,8 @@ app.get( "/logout", ( req, res ) => {
 
 //Mackenzie's 4 pages
 app.post( "/addassignment", ( req, res ) => {
-    //check if user is authenticated before rendering - will need to do this later on once login/signup is done
     console.log("user accessed the add assignment page");
-    res.render("addassignment", {courseId: req.body.courseId}); //replace hardcoded value with req.body.variable from eric's form
+    res.render("addassignment", {courseId: req.body.courseId});
 });
 
 app.post("/addassign", async( req, res ) => {
@@ -569,7 +554,6 @@ app.post("/addassign", async( req, res ) => {
 });
 
 app.post( "/editassignment", async( req, res ) => {
-    //check if user is authenticated before rendering - will need to do this later on once login/signup is done
     console.log("user accessed the edit assignment page");
     console.log(req.body)
     let assignId = req.body.assignId
@@ -610,10 +594,8 @@ app.post( "/edassign", async( req, res ) => {
 });
 
 app.post( "/addcourse", ( req, res ) => {
-    //check if user is authenticated before rendering - will need to do this later on once login/signup is done
     console.log("user accessed the add course page");
-    console.log(req.user)
-    res.render("addcourse", {instrucId: "111111111111111111111111"}); //replace hardcoded value with req.user.userid - passport
+    res.render("addcourse", {instrucId: req.user._id});
 });
 
 app.post( "/newcourse", async( req, res ) => {
@@ -654,15 +636,11 @@ app.post( "/newcourse", async( req, res ) => {
 });
 
 app.post( "/joincourse", ( req, res ) => {
-    //check if user is authenticated before rendering - will need to do this later on once login/signup is done
     console.log("user accessed the join course page");
-    res.render("joincourse", {studId: "111111111111111111111111"}); //replace hardcoded value with req.user.userid - passport
+    res.render("joincourse", {studId: req.user._id}); //replace hardcoded value with req.user.userid - passport
 });
 
 app.post( "/jncourse", async( req, res ) => {
-    //need student id from req.user.username/id
-    //add student's id to add to the course's studentList
-    //add course id (if course exists) to the student's listOfCourses
     let foundCourse = false;
     const results = await Course.find();
     for(i = 0; i < results.length; i++){
@@ -678,7 +656,7 @@ app.post( "/jncourse", async( req, res ) => {
         }
     }
     if(foundCourse){
-        studId = mongoose.Types.ObjectId(req.body.studId); //this needs to change later to req.user.userId passport session
+        studId = mongoose.Types.ObjectId(req.body.studId);
         await Course.updateOne({_id: courseId}, 
             { 
                 $push: {studentList: studId},
