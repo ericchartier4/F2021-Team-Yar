@@ -4,7 +4,7 @@ const userSchema = require("./user").userSchema;
 const courseSchema = new mongoose.Schema({
     courseName: String,
     sectionName: String,
-    instructor: userSchema, //number is instructor id - we never made any functionality for multiple instructors, 
+    instructor: {type: mongoose.Schema.Types.ObjectId, ref: 'User'}, //number is instructor id - we never made any functionality for multiple instructors, 
     //so it will remain as one and not an array - MK
     studentList: Array, //array of ids
     assignmentList: Array, //array of ids

@@ -702,7 +702,19 @@ app.post( "/newcourse", async( req, res ) => {
             console.log("unique code")
         }
     }
-    instrucId = mongoose.Types.ObjectId(req.body.instrucId);
+
+    // const assignment = new Assignment({
+    //     assignmentName: req.body.assignName,
+    //     dueDate: fixedDate,
+    //     dueTime: req.body.dueTime,
+    // });
+    // assignID = assignment._id;
+    // console.log(assignID);
+    // assignment.save();
+
+
+    instrucId = mongoose.Types.ObjectId(req.user._id);
+    console.log(instrucId)
     const course = new Course({
         courseName: req.body.course,
         sectionName: req.body.section,
@@ -710,8 +722,13 @@ app.post( "/newcourse", async( req, res ) => {
         studentList: [],
         assignmentList: [],
         courseCode: newCode
-    })
+    });
+    courseId = course._id;
     course.save();
+    await User.updateOne({_id: instrucId}, 
+        {
+            $push: {listOfCourses: courseId}
+        });
     res.redirect("/calendar");
 });
 
@@ -736,7 +753,7 @@ app.post( "/jncourse", async( req, res ) => {
         }
     }
     if(foundCourse){
-        studId = mongoose.Types.ObjectId(req.body.studId);
+        studId = mongoose.Types.ObjectId(req.user.studId);
         await Course.updateOne({_id: courseId}, 
             { 
                 $push: {studentList: studId},
