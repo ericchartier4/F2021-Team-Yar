@@ -454,7 +454,7 @@ app.get ("/instructorCalendar", async(req,res)=>{
        
         if (firstCourse !== null )
         { 
-        firstcourse = firstCourse[0] 
+        firstCourse = firstCourse[0] 
         req.session.instructorCourseIdPointer = firstCourse.valueOf();
         }
         else 
@@ -527,7 +527,7 @@ app.get("/studentCalendar", async(req,res)=>{
     }
    
     
-    console.log(assignmentInfoList)
+    
 
 
     res.render("studentCalendar", { assignmentInfoList:assignmentInfoList, sundayOfWeek: new Date (sundayOfWeek), saturdayOfWeek:new Date(saturdayOfWeek) , isLessThan24HourStrings:isLessThan24HourStrings }); 
