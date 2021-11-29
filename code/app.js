@@ -275,12 +275,16 @@ return Courses;
  async function getAssignmentsOfWeek(courseListArray, sundayOfWeek)
 {
     let userAssignments = []; 
-   
+    console.log(courseListArray);
     let sundayOfNextWeek = new Date(await getSundayOfNextWeek(sundayOfWeek));
+    if(courseListArray.length !== 0)
+    {
     for (let i of courseListArray)
     {      
         
         let viewAssignmentList = await Course.findOne({_id: i });
+        if (viewAssignmentList.length !== 0 )
+        {
         viewAssignmentList= viewAssignmentList["assignmentList"];
         for (let j of viewAssignmentList)
         {
@@ -295,6 +299,8 @@ return Courses;
             }
         }
     }
+    }
+}
     return userAssignments
 }
 
@@ -419,11 +425,43 @@ app.get( "/calendar", async( req, res ) => {
 
     console.log ("user attempting to access calender")
 
-    // will assess if student or instructor
-    res.redirect("/instructorCalendar")
+
+
+console.log("user request to calender ");
+  if ( req.isAuthenticated() ){
+    try {
+        console.log( "was authorized and found:" );
+       if (  req.user.isInstructor == true )
+       {
+            res.redirect("/instructorCalendar");
+       }
+       else 
+       {
+        res.redirect("/studentCalendar");
+       }
+    } catch ( error ) {
+        console.log( error );
+    }
+} else {
+    console.log( "was not authorized." );
+    res.redirect( "/" );
+}
+
+
+
+
+
+
+
+   
 });
 
 app.get ("/instructorCalendar", async(req,res)=>{
+    console.log("user request to instructor calendar ");
+  if ( req.isAuthenticated() ){
+    try {
+        console.log( "was authorized and found:" );
+        
     if (!req.session.calendarDatePointer) {  
         req.session.calendarDatePointer = new Date();
         req.session.calendarDatePointer.setHours(0);
@@ -431,19 +469,22 @@ app.get ("/instructorCalendar", async(req,res)=>{
         req.session.calendarDatePointer.setSeconds(0);
         req.session.calendarDatePointer.setMilliseconds(0);
       }
-    if (!req.session.instructorCourseIdPointer )
+    if (!req.session.instructorCourseIdPointer || req.session.instructorCourseIdPointer === [] )
     {
-        let firstCourse = await User.findOne({_id:"111111111111111111111111"})
-        firstCourse = firstCourse["listOfCourses"]
-       
-        if (firstCourse !== null )
-        { 
+        let firstCourse = await User.findOne({_id:req.user._id})
+      
+      firstCourse = firstCourse["listOfCourses"]
+        if (firstCourse.length !== 0  )
+        {  
+            
+        
         firstCourse = firstCourse[0] 
         req.session.instructorCourseIdPointer = firstCourse.valueOf();
         }
         else 
         {
-        req.session.instructorCourseIdPointer=null;
+        
+        req.session.instructorCourseIdPointer =[];
         }
         
     }
@@ -452,27 +493,42 @@ app.get ("/instructorCalendar", async(req,res)=>{
     let sundayOfWeek = new Date (req.session.calendarDatePointer);
     sundayOfWeek.setDate(sundayOfWeek.getDate()-dayofWeek);
     let saturdayOfWeek =  new Date(await getSaturdayOfWeek(sundayOfWeek));
-    
-    let courseList
-    let assignmentList ; 
-     if( req.session.instructorCourseIdPointer !== null)
+ 
+    let courseList = new Array();
+    let assignmentList = new Array(); 
+    let assignmentInfoList = new Array(); 
+     if (req.session.instructorCourseIdPointer.length !== 0 )
      {
      let singleCourseArray = new Array( req.session.instructorCourseIdPointer); 
      assignmentList = await getAssignmentsOfWeek(singleCourseArray,sundayOfWeek)
      assignmentList = await sortAssignmentsByDueDate(assignmentList);
      assignmentInfoList = await getAssignmentInfoForPrint(assignmentList,singleCourseArray);
-     courseList  =  await getCourseList("111111111111111111111111")
      }
-     else
-     {
-        courseList =null; 
-        assignmentList = null;
-     }
+     courseList  =  await getCourseList(req.user._id)
      
    
     
     
     res.render("instructorCalendar", {  assignmentInfoList:assignmentInfoList, courseList: courseList, sundayOfWeek:new Date(sundayOfWeek),saturdayOfWeek:new Date(saturdayOfWeek),  isLessThan24HourStrings:isLessThan24HourStrings ,currentCourse: req.session.instructorCourseIdPointer, courseList:courseList}); 
+    } catch ( error ) {
+        console.log( error );
+    }
+} else {
+    console.log( "was not authorized." );
+    res.redirect( "/" );
+}
+
+
+
+
+
+
+
+
+
+
+
+    
 
 
 
@@ -480,6 +536,10 @@ app.get ("/instructorCalendar", async(req,res)=>{
 
 })
 app.get("/studentCalendar", async(req,res)=>{
+        console.log("user request student calendar  ");
+        if ( req.isAuthenticated() ){
+          try {
+    console.log( "was authorized and found:" );
     if (!req.session.calendarDatePointer) {  
         req.session.calendarDatePointer = new Date();
         req.session.calendarDatePointer.setHours(0);
@@ -494,10 +554,10 @@ app.get("/studentCalendar", async(req,res)=>{
      await sundayOfWeek.setDate(sundayOfWeek.getDate()-dayofWeek);
     let saturdayOfWeek =   new Date( await getSaturdayOfWeek(sundayOfWeek));
    
-    let courseList  =  await getCourseList("111111111111111111111111")
-    let assignmentList
-   
-    if (courseList !== null)
+    let courseList  =  await getCourseList(req.user._id)
+    let assignmentList = [];
+    let assignmentInfoList = [];
+    if (courseList.length !== 0) 
     {
         
         assignmentList =  await getAssignmentsOfWeek(courseList, sundayOfWeek)
@@ -505,20 +565,40 @@ app.get("/studentCalendar", async(req,res)=>{
         assignmentInfoList = await getAssignmentInfoForPrint(assignmentList,courseList);
       
     }                                                        
-    else 
-    {
-        assignmentList = null;
-    }
    
-    
-    
-
-
     res.render("studentCalendar", { assignmentInfoList:assignmentInfoList, sundayOfWeek: new Date (sundayOfWeek), saturdayOfWeek:new Date(saturdayOfWeek) , isLessThan24HourStrings:isLessThan24HourStrings }); 
+              
+          } catch ( error ) {
+              console.log( error );
+          }
+      } else {
+          console.log( "was not authorized." );
+          res.redirect( "/" );
+      }
 
-})
+    })
+
+
+
 
 //Logout
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//in theory this one should already work - MK
 app.get( "/logout", ( req, res ) => {
     console.log( "A user is logging out" );
     req.logout();
@@ -672,26 +752,72 @@ app.post( "/jncourse", async( req, res ) => {
 });
 
  app.get( "/nextWeek", async( req, res ) => {
-    
-    let weekIncrament = await new Date( req.session.calendarDatePointer);
+
+
+    console.log("user request to get next week  ");
+    if ( req.isAuthenticated() ){
+      try {
+          console.log( "was authorized and found:" );
+          let weekIncrament = await new Date( req.session.calendarDatePointer);
     await weekIncrament.setDate(weekIncrament.getDate()+7);
     req.session.calendarDatePointer = weekIncrament;
     res.redirect("/calendar")
+      } catch ( error ) {
+          console.log( error );
+      }
+  } else {
+      console.log( "was not authorized." );
+      res.redirect( "/" );
+  }
+    
+
     
  });
 
  app.get( "/lastWeek", async( req, res ) => {
-    let weekDecrament = await new Date( req.session.calendarDatePointer);
-    await weekDecrament.setDate(weekDecrament.getDate()-7);
-    req.session.calendarDatePointer = weekDecrament;
-    res.redirect("/calendar")
+
+
+    console.log("user request to get last week  ");
+  if ( req.isAuthenticated() ){
+    try {
+        console.log( "was authorized and found:" );
+        let weekDecrament = await new Date( req.session.calendarDatePointer);
+         await weekDecrament.setDate(weekDecrament.getDate()-7);
+        req.session.calendarDatePointer = weekDecrament;
+         res.redirect("/calendar")
+    } catch ( error ) {
+        console.log( error );
+    }
+} else {
+    console.log( "was not authorized." );
+    res.redirect( "/" );
+}
+
+
+
+
+    
  
  });
 
  
  app.post( "/instructorSelectCourse", ( req, res ) => {
-   console.log(req.body.selecter);
-   req.session.instructorCourseIdPointer=req.body.selecter;
+    console.log("user request to instructorselectcourse ");
+    if ( req.isAuthenticated() ){
+      try {
+          console.log( "was authorized and found:" );
+        req.session.instructorCourseIdPointer=req.body.selecter;
 
-    res.redirect("/calendar");
+        res.redirect("/calendar");
+      } catch ( error ) {
+          console.log( error );
+      }
+  } else {
+      console.log( "was not authorized." );
+      res.redirect( "/" );
+  }
+
+
+  
 }); 
+
