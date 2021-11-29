@@ -223,7 +223,7 @@
           </form>
         </td>
         <td>
-          <% if (currentCourse === [])
+          <% if (currentCourse !== null)
           {%>
           <form action="/addassignment" method="post">
             <input type="submit" value="Add Assignment"class="btn btn-primary"> 
