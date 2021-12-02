@@ -19,11 +19,11 @@
     <div class="enterDetails centered">
         <form action="/addassign" method="POST" class="centered">
             <input type="hidden" id="courseId" name="courseId" value="<%= courseId %>">
-            <input type="text" name="assignName" class="textbox" placeholder="Assignment Name">
+            <input type="text" name="assignName" class="textbox" placeholder="Assignment Name" required>
             <br><br>
             <label>Due Date: </label>
-            <input id="dueDate" name="dueDate" type="date">
-            <input id="dueTime" name="dueTime" type="time">
+            <input id="dueDate" name="dueDate" type="date" required>
+            <input id="dueTime" name="dueTime" type="time" required>
             <br><br>
             <input class="btn btn-primary" type="submit" value="Submit">
         </form>

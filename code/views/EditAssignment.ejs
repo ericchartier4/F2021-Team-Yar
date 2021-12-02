@@ -19,11 +19,11 @@
     <div class="enterDetails centered">
         <form action="/edassign" method="POST" class="centered">
             <input type="hidden" name="assignId" value="<%= assignId %>">
-            <input type="text" name="assignName" class="textbox" value="<%= assignName %>">
+            <input type="text" name="assignName" class="textbox" value="<%= assignName %>" required>
             <br><br>
             <label>Due Date: </label>
-            <input id="dueDate" name="dueDate" type="date" value="<%= dueDate %>">
-            <input id="dueTime" name="dueTime" type="time" value="<%= dueTime %>">
+            <input id="dueDate" name="dueDate" type="date" value="<%= dueDate %>" required>
+            <input id="dueTime" name="dueTime" type="time" value="<%= dueTime %>" required>
             <br><br>
             <input class="btn btn-primary" type="submit" value="Submit">
         </form>
