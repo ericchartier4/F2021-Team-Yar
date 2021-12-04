@@ -8,8 +8,7 @@ students can join courses to view the assginments from each course.
 
 
 INSTALLATION INSTRUCTIONS:
-Before Installing:
--This application runs on a localhost so you must have the ability to run mongoose.
+Before Installing: This application runs on a localhost so you must have the ability to run mongoose.
 
 1. Download the application by clicking the "code" button and then the "download zip" button on GitHub.
 2. Extract the files and open a git bash in the folder named "code" 
