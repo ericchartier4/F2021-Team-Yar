@@ -24,5 +24,5 @@ Before Installing: This application runs on a localhost so you must have the abi
     This installs some of the requirements to run the application.
 7. Once that is done, run: "npm i passport passport-local passport-local-mongoose express-session dotenv"
     This installs the remaining requirements to run the application.
-8. You can now run the application by running the command: "nodemon app.js"
+8. You can now run the application by running the command: "nodemon app.js" You can use ctrl+c to stop it from running.
 9. The application is now running. In a browser, type "localhost:3000" and you will be taken to the login screen!
