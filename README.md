@@ -14,7 +14,7 @@ Before Installing: This application runs on a localhost so you must have the abi
 2. Extract the files and open a git bash in the folder named "code" 
 3. To be able to run this app, passport needs a .env file. You need a .env file to run the code and it is used for local user authentication.
     The program cannot run without it. Create a .env file, and inside it make your own authentication key. It must look something like this:
-    SECRET=Something secret to encrypt our session
+    "SECRET=Something secret to encrypt our session"
     This file must be under the code folder.
 4. Open two terminals (we prefer Windows Powershell). In one, type the command "mongod" and press enter. In the other, type "mongo" and press enter.
     You now have your local database up and running!
