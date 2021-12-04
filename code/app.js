@@ -285,13 +285,13 @@ app.get("/studentCalendar", async(req,res)=>{
 });
 
 //Mackenzie
-app.post( "/addassignment", ( req, res ) => {
+app.post( "/addAssignment", ( req, res ) => {
     console.log("user accessed the add assignment page");
     res.render("addassignment", {courseId: req.body.courseId});
 });
 
 //Mackenzie
-app.post("/addassign", async( req, res ) => {
+app.post("/addAssign", async( req, res ) => {
     date = req.body.dueDate;
     fixedDate = date.substr(0,4)+"/"+date.substr(5,2)+"/"+date.substr(8,2);
 
@@ -311,7 +311,7 @@ app.post("/addassign", async( req, res ) => {
 });
 
 //Mackenzie
-app.post( "/editassignment", async( req, res ) => {
+app.post( "/editAssignment", async( req, res ) => {
     console.log("user accessed the edit assignment page");
     let assignId = req.body.assignId
     const results = await Assignment.find();
@@ -335,7 +335,7 @@ app.post( "/editassignment", async( req, res ) => {
 });
 
 //Mackenzie
-app.post( "/edassign", async( req, res ) => {
+app.post( "/edAssign", async( req, res ) => {
     date = req.body.dueDate;
     fixedDate = date.substr(0,4)+"/"+date.substr(5,2)+"/"+date.substr(8,2);
     
@@ -351,13 +351,13 @@ app.post( "/edassign", async( req, res ) => {
 });
 
 //Mackenzie
-app.post( "/addcourse", ( req, res ) => {
+app.post( "/addCourse", ( req, res ) => {
     console.log("user accessed the add course page");
     res.render("addcourse");
 });
 
 //Mackenzie
-app.post( "/newcourse", async( req, res ) => {
+app.post( "/newCourse", async( req, res ) => {
     const results = await Course.find();
     newCode = genCode();
     console.log("new code generated")
@@ -401,13 +401,13 @@ app.post( "/newcourse", async( req, res ) => {
 });
 
 //Mackenzie
-app.post( "/joincourse", ( req, res ) => {
+app.post( "/joinCourse", ( req, res ) => {
     console.log("user accessed the join course page");
     res.render("joincourse");
 });
 
 //Mackenzie
-app.post( "/jncourse", async( req, res ) => {
+app.post( "/jnCourse", async( req, res ) => {
     let foundCourse = false;
     const results = await Course.find();
     for(i = 0; i < results.length; i++){
