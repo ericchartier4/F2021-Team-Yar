@@ -6,6 +6,7 @@ Taskmaster aims for better schedule planning between students and instructors.
 The current version of our application allows instructors to create courses and create and edit assginments, and
 students can join courses to view the assginments from each course.
 
+Note: The authentication code for instructors is "grades"
 
 INSTALLATION INSTRUCTIONS:
 Before Installing: This application runs on a localhost so you must have the ability to run mongoose.
