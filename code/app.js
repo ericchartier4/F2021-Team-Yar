@@ -148,6 +148,11 @@ app.post("/login", (req, res) => {
 //Logout
 app.get( "/logout", ( req, res ) => {
     console.log( "A user is logging out" );
+    if (  req.user.isInstructor === true )
+        {
+                delete  req.session.instructorCourseIdPointer 
+        }
+    delete req.session.calendarDatePointer
     req.logout();
     res.redirect("/");
 });
@@ -160,7 +165,7 @@ app.get( "/calendar", async( req, res ) => {
     if ( req.isAuthenticated() ){
         try {
             console.log( "User was authorized" );
-        if (  req.user.isInstructor == true )
+        if (  req.user.isInstructor === true )
         {
                 res.redirect("/instructorCalendar");
         }
@@ -231,7 +236,7 @@ app.get ("/instructorCalendar", async(req,res)=>{
             currentCourse = null
         }
         
-        console.log(req.session.instructorCourseIdPointer);
+       
         
         res.render("instructorCalendar", {  assignmentInfoList:assignmentInfoList, courseList: courseList, sundayOfWeek:new Date(sundayOfWeek),saturdayOfWeek:new Date(saturdayOfWeek),  isLessThan24HourStrings:isLessThan24HourStrings ,currentCourse: currentCourse, courseList:courseList}); 
         } catch ( error ) {
@@ -592,7 +597,7 @@ async function  getCourseList(userId)
  async function getAssignmentsOfWeek(courseListArray, sundayOfWeek)
 {
     let userAssignments = []; 
-    console.log(courseListArray);
+    
     let sundayOfNextWeek = new Date(await getSundayOfNextWeek(sundayOfWeek));
     if(courseListArray.length !== 0)
     {
